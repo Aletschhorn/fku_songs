@@ -1,0 +1,146 @@
+{namespace sv=FKU\FkuSongs\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+    	<f:link.action action="list" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-28-search.svg#glyphicons-basic"/></svg> Suchformular
+        </f:link.action>
+    </li>
+    <li class="nav-item">
+    	<f:link.page pageUid="{settings.chartsPid}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-42-stats-bars.svg#glyphicons-basic"/></svg> Häufige Lieder
+        </f:link.page>
+    </li>
+    <li class="nav-item">
+    	<f:link.action action="keyword" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-67-tags.svg#glyphicons-basic"/></svg> Suche nach Stichwörtern
+        </f:link.action>
+    </li>
+	<f:security.ifHasRole role="Musik-Admin">
+    	<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-137-cogwheel.svg#glyphicons-basic"/></svg> Musik-Admin</a>
+            <div class="dropdown-menu">
+                <f:link.page pageUid="{settings.reportingPid}" class="dropdown-item">
+                	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-306-square-empty-play.svg#glyphicons-basic"/></svg> Pro Gottesdienst
+                </f:link.page>
+                <f:link.page pageUid="{settings.statisticsPid}" class="dropdown-item">
+                	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-670-dashboard.svg#glyphicons-basic"/></svg> Statistiken
+                </f:link.page>
+                <f:link.action action="new" class="dropdown-item">
+                	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-371-plus.svg#glyphicons-basic"/></svg> Lied hinzufügen
+                </f:link.action>
+            </div>
+        </li>
+	</f:security.ifHasRole>
+</ul>
+
+<h3>Inhaltsverzeichnis auswählen</h3>
+
+<f:flashMessages as="flashMessages">
+	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
+</f:flashMessages>
+
+<f:spaceless>
+	
+	<f:form name="toc" action="toc">
+		<div class="row">
+			<div class="col-sm-6 col-12">
+            	<fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-sm-4 col-form-label pt-0">Sammlung</legend>
+                        <div class="col-sm-8">
+                            <f:for each="{sources}" as="s">
+	                            <div class="form-check">
+                                	<f:form.radio name="filter[source]" value="{s.uid}" checked="{filter.source}=={s.uid}" class="form-check-input" />
+                                    <label class="form-check-label" for="filter[source]">
+                                         {s.title}
+                                    </label>
+                                    <br />
+	                            </div>
+                            </f:for>
+                        </div>
+                    </div>
+                </fieldset>
+			</div>
+			<div class="col-sm-6 col-12">
+            	<fieldset class="form-group">
+                    <div class="row">
+                        <legend class="col-sm-4 col-form-label pt-0">Sortierung</legend>
+                        <div class="col-sm-8">
+                            <div class="form-check">
+                            	<f:form.radio name="filter[sorting]" checked="{filter.sorting}=='title'" value="title" class="form-check-input" />
+                                <label class="form-check-label" for="filter[sorting]">nach Titel</label>
+                            </div>
+                            <div class="form-check">
+                            	<f:form.radio name="filter[sorting]" checked="{filter.sorting}=='source'" value="source" class="form-check-input" />
+                                <label class="form-check-label" for="filter[sorting]">nach Liednummer</label>
+                            </div>
+                        </div>
+	                </div>
+                </fieldset>
+
+            	<fieldset class="form-group">
+                    <div class="row">
+                        <label class="col-sm-4 col-form-label pt-0">Anzeigen</label>
+                        <div class="col-sm-8">
+                            <div class="form-check">
+                            	<f:form.checkbox name="filter[rejected]" checked="{filter.rejected}==1" value="1" class="form-check-input" />
+                                <label class="form-check-label" for="filter[sorting]">Entfernte Lieder</label>
+                            </div>
+                            <div class="form-check">
+                            	<f:form.checkbox name="filter[author]" checked="{filter.author}==1" value="1" class="form-check-input" />
+                                <label class="form-check-label" for="filter[author]">Autor</label>
+                            </div>
+                            <div class="form-check">
+                            	<f:form.checkbox name="filter[slide]" checked="{filter.slide}==1" value="1" class="form-check-input" />
+                                <label class="form-check-label" for="filter[slide]">Foliennummer</label>
+                            </div>
+                            <div class="form-check">
+                            	<f:form.checkbox name="filter[lastUsage]" checked="{filter.lastUsage}==1" value="1" class="form-check-input" />
+                                <label class="form-check-label" for="filter[lastUsage]">Letzte Verwendung</label>
+                            </div>
+                            <div class="form-check">
+                            	<f:form.checkbox name="filter[popularity]" checked="{filter.popularity}==1" value="1" class="form-check-input" />
+                                <label class="form-check-label" for="filter[popularity]">Beliebtheit</label>
+                            </div>
+                            <f:security.ifHasRole role="Developper">
+                                <div class="form-check">
+                                    <f:form.checkbox name="filter[usages]" checked="{filter.usages}==1" value="1" class="form-check-input" />
+                                    <label class="form-check-label" for="filter[usages]">Anz. Verwendungen 24 Mt.</label>
+                                </div>
+                            </f:security.ifHasRole>
+                            <div class="form-check">
+                            	<f:form.checkbox name="filter[copyright]" checked="{filter.copyright}==1" value="1" class="form-check-input" />
+                                <label class="form-check-label" for="filter[copyright]">Liedtext-Copyright</label>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+			</div>
+		</div>
+        <div class="row form-group">
+            <div class="col-sm-10 col-sm-offset-2">
+                <f:form.submit value="Zeigen" class="btn btn-primary" />&nbsp;
+            </div>
+        </div>
+	</f:form>
+    <br />
+	
+	<f:if condition="{songs}">
+		<f:then>
+			<h3>Inhaltsverzeichnis {source.title}</h3>
+		    <p><f:link.action action="tocExport" target="_blank" arguments="{filter:filter}" pageType="{settings.pdfPageType}"><svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-199-save.svg#glyphicons-basic"/></svg> Tabelle als PDF herunterladen und drucken</f:link.action></p>
+			<f:render partial="Song/TocTable" arguments="{songs:songs,filter:filter}" />
+		</f:then>
+		<f:else>
+			<br />
+			<f:render partial="Alert" arguments="{severity:'-1',title:'',message:'Keine Lieder gefunden'}" />
+		</f:else>
+	</f:if>
+</f:spaceless>
+
+</f:section>

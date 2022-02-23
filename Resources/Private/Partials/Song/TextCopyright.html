@@ -1,0 +1,49 @@
+<f:if condition="{short}">
+	<f:then>
+        <f:switch expression="{songtextCopyright}">
+            <f:case value="1">
+            	<span title="Liedtext darf in Gottesdiensten gezeigt werden">
+                    <svg class="icon-md" width="32" height="32" fill="#095286">
+                        <use xlink:href="fileadmin/icon/glyphicons-basic-634-circle-check.svg#glyphicons-basic"/>
+                    </svg>
+                </span>
+            </f:case>
+            <f:case value="0">
+            	<span title="Offen, ob Liedtext in Gottesdienst gezeigt werden darf">
+                    <svg class="icon-md" width="32" height="32" fill="currentColor">
+                        <use xlink:href="fileadmin/icon/glyphicons-basic-635-circle-question.svg#glyphicons-basic"/>
+                    </svg>
+                </span>
+            </f:case>
+            <f:case value="-1">
+            	<span title="Liedtext darf in Gottesdiensten NICHT gezeigt werden">
+                    <svg class="icon-md" width="32" height="32" fill="#D07601">
+                        <use xlink:href="fileadmin/icon/glyphicons-basic-633-circle-remove.svg#glyphicons-basic"/>
+                    </svg>
+                </span>
+            </f:case>
+        </f:switch>
+    </f:then>
+    <f:else>
+        <f:switch expression="{songtextCopyright}">
+            <f:case value="1">
+                <svg class="icon-md" width="32" height="32" fill="#095286">
+                	<use xlink:href="fileadmin/icon/glyphicons-basic-634-circle-check.svg#glyphicons-basic"/>
+                </svg>
+            	Liedtext darf in Gottesdiensten gezeigt werden
+            </f:case>
+            <f:case value="0">
+                <svg class="icon-md" width="32" height="32" fill="currentColor">
+                	<use xlink:href="fileadmin/icon/glyphicons-basic-635-circle-question.svg#glyphicons-basic"/>
+                </svg>
+                Offen, ob Liedtext in Gottesdienst gezeigt werden darf
+            </f:case>
+            <f:case value="-1">
+                <svg class="icon-md" width="32" height="32" fill="#D07601">
+                	<use xlink:href="fileadmin/icon/glyphicons-basic-633-circle-remove.svg#glyphicons-basic"/>
+                </svg>
+            	Liedtext darf in Gottesdiensten NICHT gezeigt werden
+            </f:case>
+        </f:switch>
+	</f:else>
+</f:if>

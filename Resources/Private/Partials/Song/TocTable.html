@@ -1,0 +1,66 @@
+{namespace s=FKU\FkuSongs\ViewHelpers}
+
+<f:spaceless>
+<table class="table">
+	<tr>
+		<th>Nummer</th>
+		<th>Titel</th>
+        <f:if condition="{filter.author}">
+			<th>Autor</th>
+        </f:if>
+        <f:if condition="{filter.slide}">
+        	<th>Folie</th>
+        </f:if>
+		<th>Tonart</th>
+		<th>Sprache</th>
+        <f:if condition="{filter.lastUsage}">
+        	<th>Letzte Verwendung</th>
+        </f:if>
+        <f:if condition="{filter.usages}">
+        	<th>Letzte 24 Mt.</th>
+        </f:if>
+        <f:if condition="{filter.popularity}">
+        	<th>Beliebtheit</th>
+        </f:if>
+        <f:if condition="{filter.copyright}">
+        	<th>Copyright</th>
+        </f:if>
+	</tr>
+
+	<f:for each="{songs}" as="song">
+		<tr>
+			<td><f:render partial="Song/CollectionSingle" arguments="{collections:song.collection,source:filter.source,complete:0}" /></td>
+			<td>
+				<s:ifSongRejected song="{song}" source="{filter.source}" number="number">
+					<f:then>
+						<del><f:link.action action="show" arguments="{song:song}">{song.title}</f:link.action></del>
+					</f:then>
+					<f:else>
+						<f:link.action action="show" arguments="{song:song}">{song.title}</f:link.action>
+					</f:else>
+				</s:ifSongRejected>
+			</td>
+	        <f:if condition="{filter.author}">
+				<td>{song.author}</td>
+            </f:if>
+            <f:if condition="{filter.slide}">
+				<td><f:render partial="Song/SlideSingle" arguments="{collections:song.collection,source:filter.source,complete:0}" /></td>
+            </f:if>
+			<td>{song.tone}</td>
+			<td><f:render partial="Song/Flags" arguments="{lang:song.language}" /></td>
+            <f:if condition="{filter.lastUsage}">
+                <td>{song.lastUsage->f:format.date(format:'d.m.Y')}</td>
+            </f:if>
+            <f:if condition="{filter.usages}">
+                <td>{song.usages}</td>
+            </f:if>
+            <f:if condition="{filter.popularity}">
+                <td><nobr><f:render partial="Song/Popularity" arguments="{popularity:song.popularity}" /></nobr></td>
+            </f:if>
+            <f:if condition="{filter.copyright}">
+                <td><f:render partial="Song/TextCopyright" arguments="{songtextCopyright:song.songtextCopyright,short:1}" /></td>
+            </f:if>
+		</tr>
+	</f:for>
+</table>
+</f:spaceless>

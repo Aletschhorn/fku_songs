@@ -1,0 +1,21 @@
+<f:spaceless>
+<f:if condition="{collections}">
+	<f:then>
+		<f:for each="{collections}" as="collection" iteration="it">
+			<f:if condition="{collection.rejected}">
+				<f:then>
+					<del>{collection.source.acronym}<f:if condition="{collection.number}>0">&nbsp;<f:if condition="{complete}">Nr.&nbsp;</f:if>{collection.number}</f:if></del><f:if condition="{complete}"> (entfernt)</f:if><f:if condition="{it.isLast}==0">{separator->f:format.raw()}</f:if>
+				</f:then>
+				<f:else>
+					{collection.source.acronym}<f:if condition="{collection.number}>0">&nbsp;<f:if condition="{complete}">Nr.&nbsp;</f:if>{collection.number}</f:if><f:if condition="{collection.slide}>0 && {complete}">, Folie {collection.slide}</f:if><f:if condition="{it.isLast}==0">{separator->f:format.raw()}</f:if>
+				</f:else>
+			</f:if>
+		</f:for>
+	</f:then>
+	<f:else>
+		<f:if condition="{complete}">
+			(keine)
+		</f:if>
+	</f:else>
+</f:if>
+</f:spaceless>

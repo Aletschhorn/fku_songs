@@ -1,0 +1,160 @@
+{namespace sv=FKU\FkuSongs\ViewHelpers}
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
+
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+    	<f:link.action action="list" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-28-search.svg#glyphicons-basic"/></svg> Suchformular
+        </f:link.action>
+    </li>
+    <li class="nav-item">
+    	<f:link.page pageUid="{settings.chartsPid}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-42-stats-bars.svg#glyphicons-basic"/></svg> Häufige Lieder
+        </f:link.page>
+    </li>
+    <li class="nav-item">
+    	<f:link.action action="toc" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-952-list-numbers.svg#glyphicons-basic"/></svg> Inhaltsverzeichnis
+        </f:link.action>
+    </li>
+	<f:security.ifHasRole role="Musik-Admin">
+    	<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-137-cogwheel.svg#glyphicons-basic"/></svg> Musik-Admin</a>
+            <div class="dropdown-menu">
+                <f:link.page pageUid="{settings.reportingPid}" class="dropdown-item">
+                	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-306-square-empty-play.svg#glyphicons-basic"/></svg> Pro Gottesdienst
+                </f:link.page>
+                <f:link.page pageUid="{settings.statisticsPid}" class="dropdown-item">
+                	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-670-dashboard.svg#glyphicons-basic"/></svg> Statistiken
+                </f:link.page>
+                <f:link.action action="new" class="dropdown-item">
+                	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-371-plus.svg#glyphicons-basic"/></svg> Lied hinzufügen
+                </f:link.action>
+            </div>
+        </li>
+	</f:security.ifHasRole>
+</ul>
+
+<div class="{f:if(condition:'{songs}',then:'d-block',else:'d-none')}" id="keywordsClosed">
+	<a style="cursor:pointer" onclick="document.getElementById('keywordsOpened').className='d-block';document.getElementById('keywordsClosed').className='d-none'">
+		<h3><svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg> Suche nach Stichwörtern</h3>
+    </a>
+</div>
+<div class="{f:if(condition:'{songs}',then:'d-none',else:'d-block')}" id="keywordsOpened">
+   	<a style="cursor:pointer" onclick="document.getElementById('keywordsOpened').className='d-none';document.getElementById('keywordsClosed').className='d-block'">
+		<h3><svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg> Suche nach Stichwörtern</h3>
+	</a>
+    
+    <f:form class="form-horizontal" name="search" action="{action}">
+
+    <div class="row">
+    	<f:comment>
+		<div class="col-sm-12 col-12">
+            <div class="form-group">
+                <div class="btn-group" data-toggle="buttons">
+                    <f:for each="{predefOptions}" as="option" key="key">
+                        <label class="btn btn-default {f:if(condition:'{key}=={filter.predefined}',then:'active')}" onclick="changeSearchOptions({key})">
+                            <f:form.radio name="filter[predefined]" value="{key}" checked="{key}=={filter.predefined}" />{option}
+                        </label>
+                    </f:for>
+                </div>
+                <div class="btn-group" data-toggle="buttons">
+                    <button type="button" class="btn btn-link" onclick="toggleSearchOptions()" id="searchOptionButton"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg> Suchoptionen</button>
+                </div>
+				<f:comment>
+                <div class="btn-group" data-toggle="buttons">
+                    <f:form.button type="button" class="btn btn-link" onclick="window.location.href='{f:uri.action(action:\"list\")}'">Suchoptionen siehe Suchformular</f:form.button>
+                </div>
+                </f:comment>
+            </div>
+            <div id="searchParameters1" class="d-none">
+                <f:render partial="Song/SearchFormParameters" arguments="{filter:filterGottesdienst,sources:sources,inputFieldName:'fgd',disabled:1}" />
+            </div>
+            <div id="searchParameters2" class="d-none">
+                <f:render partial="Song/SearchFormParameters" arguments="{filter:filterHighwaeg,sources:sources,inputFieldName:'fhw',disabled:1}" />
+            </div>
+            <div id="searchParameters9" class="d-none">
+                <f:render partial="Song/SearchFormParameters" arguments="{filter:filter,sources:sources,inputFieldName:'filter',disabled:0}" />
+            </div>
+        </div>
+    	</f:comment>
+
+        <div class="col-sm-4">
+            <f:for each="{keywords}" as="kw" iteration="it">
+                <f:if condition="{it.index} == {v:math.ceil(a:'{v:math.division(a:it.total,b:3)}')}">
+                    </div><div class="col-sm-4">
+                </f:if>
+                <f:if condition="{it.index} == {v:math.ceil(a:'{v:math.division(a:it.total,b:1.5)}')}">
+                    </div><div class="col-sm-4">
+                </f:if>
+                <f:if condition="{kw.uid} == {keyword}">
+                    <f:then>
+                        <b>{kw.title} ({kw.songs})</b><br />
+                    </f:then>
+                    <f:else>
+                        <f:link.action action="keyword" arguments="{keyword:kw.uid}">{kw.title} ({kw.songs})</f:link.action><br />
+                    </f:else>
+                </f:if>
+            </f:for>
+        </div>
+    </div>
+    </f:form>
+</div>
+    
+<f:if condition="{songs}">
+    <f:then>
+        <br />
+        <h3>Suchresultat: <f:if condition="{total}==1"><f:then>1 Lied</f:then><f:else>{total} Lieder</f:else></f:if> zum Stichwort &quot;{selectedKeyword.title}&quot;</h3>
+        <f:if condition="{page.total}>1">
+            <f:render partial="Song/Pagination" arguments="{page:page,pagearray:pagearray,filter:filter,action:'keyword'}" />
+        </f:if>
+
+        <f:render partial="Song/Table" arguments="{songs:songs,filter:filter}" />
+
+        <f:if condition="{page.total}>1">
+            <f:render partial="Song/Pagination" arguments="{page:page,pagearray:pagearray,action:'keyword'}" />
+        </f:if>
+
+    </f:then>
+</f:if>
+
+<script language="javascript">
+var searchOptionsDisplayed = {f:if(condition:'{filter.predefined}==9',then:'0',else:'1')};
+toggleSearchOptions();
+
+function toggleSearchOptions () {
+	if (searchOptionsDisplayed == 0) {
+		var mode = document.getElementsByName('tx_fkusongs_songs[filter][predefined]');
+		for (i=0;i<mode.length;i++) {
+			if (mode[i].checked) {
+				parameterSet = mode[i].value;
+			}
+		}
+		document.getElementById('searchParameters'+parameterSet).className = 'd-block';
+		document.getElementById('searchOptionButton').innerHTML = '<svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg> Suchoptionen'
+		searchOptionsDisplayed = 1;
+	} else {
+		document.getElementById('searchParameters1').className = 'd-none';
+		document.getElementById('searchParameters2').className = 'd-none';
+		document.getElementById('searchParameters9').className = 'd-none';
+		document.getElementById('searchOptionButton').innerHTML = '<svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg> Suchoptionen'
+		searchOptionsDisplayed = 0;
+	}
+	
+}
+
+function changeSearchOptions (parameterSet) {
+	if (searchOptionsDisplayed == 1) {
+		document.getElementById('searchParameters1').className = 'd-none';
+		document.getElementById('searchParameters2').className = 'd-none';
+		document.getElementById('searchParameters9').className = 'd-none';
+		document.getElementById('searchParameters'+parameterSet).className = 'd-block';
+	}
+}
+</script>
+
+</f:section>

@@ -1,0 +1,23 @@
+{namespace fpdf=CodingMs\FluidFpdf\ViewHelpers}
+
+<fpdf:setFont family="Calibri" size="{fontSizeLegend}" style="B" />
+<fpdf:cell width="{columnWidth.1}" height="{lineHeight}" border="1" fill="1" text="Nummer" />
+<fpdf:cell width="{columnWidth.2}" height="{lineHeight}" border="1" fill="1" text="Titel" />
+<f:if condition="{filter.author}">
+	<fpdf:cell width="{columnWidth.3}" height="{lineHeight}" border="1" fill="1" text="Autor" />
+</f:if>
+<f:if condition="{filter.slide}">
+	<fpdf:cell width="{columnWidth.4}" height="{lineHeight}" border="1" fill="1" text="Folie" />
+</f:if>
+<fpdf:cell width="{columnWidth.5}" height="{lineHeight}" border="1" fill="1" text="Tonart" />
+<f:if condition="{filter.lastUsage}">
+	<f:then>
+        <fpdf:cell width="{columnWidth.6}" height="{lineHeight}" border="1" fill="1" text="Sprache" />
+        <fpdf:cell width="{columnWidth.7}" height="{lineHeight}" border="1" fill="1" ln="1" text="Letztmals" />
+    </f:then>
+    <f:else>
+		<fpdf:cell width="{columnWidth.6}" height="{lineHeight}" border="1" fill="1" ln="1" text="Sprache" />
+    </f:else>
+</f:if>
+
+<fpdf:setFont family="Calibri" size="{fontSize}" style="" />

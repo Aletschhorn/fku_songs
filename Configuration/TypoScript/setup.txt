@@ -1,0 +1,36 @@
+
+plugin.tx_fkusongs {
+	view {
+		templateRootPaths.0 = {$plugin.tx_fkusongs.view.templateRootPath}
+		partialRootPaths.0 = {$plugin.tx_fkusongs.view.partialRootPath}
+		layoutRootPaths.0 = {$plugin.tx_fkusongs.view.layoutRootPath}
+	}
+	persistence {
+		storagePid = {$plugin.tx_fkusongs.persistence.storagePid}
+	}
+	settings {
+		resultsPerPage = {$plugin.tx_fkusongs.settings.resultsPerPage}
+		songPid = {$plugin.tx_fkusongs.settings.songPid}
+		reportingPid = {$plugin.tx_fkusongs.settings.reportingPid}
+		chartsPid = {$plugin.tx_fkusongs.settings.chartsPid}
+		statisticsPid = {$plugin.tx_fkusongs.settings.statisticsPid}
+		planningPid = {$plugin.tx_fkusongs.settings.planningPid}
+		deleteCachePid = {$plugin.tx_fkusongs.settings.deleteCachePid}
+		pdfPageType = {$plugin.tx_fkusongs.settings.pdfPageType}
+		chartsTimeSelection = {$plugin.tx_fkusongs.settings.chartsTimeSelection}
+	}
+}
+
+pdf_song = PAGE
+pdf_song {
+  typeNum = {$plugin.tx_fkusongs.settings.pdfPageType}
+  10 = USER
+  10 < tt_content.list.20.fkusongs_list
+  config {
+    disableAllHeaderCode = 1
+    additionalHeaders = Content-type:application/pdf
+    xhtml_cleaning = 0
+    admPanel = 0
+	debug = 0
+  }
+}

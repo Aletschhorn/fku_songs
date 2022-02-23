@@ -1,0 +1,82 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<h2>Offene Liedmeldungen</h2>
+
+<f:flashMessages as="flashMessages">
+	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
+</f:flashMessages>
+
+<f:link.action action="statistics">
+	<svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-223-chevron-left.svg#glyphicons-basic"/></svg>
+    Zurück zur Statistik
+</f:link.action>
+<br /><br />
+
+<f:if condition="{reportings}">
+	<f:then>
+
+        <table class="table">
+            <tr>
+                <th>Titel</th>
+                <th>Anlässe</th>
+                <th>CCLI</th>
+                <th> </th>
+            </tr>
+            <f:groupedFor each="{reportings}" as="reportGroup" groupBy="song" groupKey="song">
+                <tr>
+                    <td style="vertical-align:middle;">
+                        <f:link.action action="show" controller="Song" pageUid="{settings.songPid}" arguments="{song:song}">{song.title}</f:link.action>
+                        <f:if condition="{reportGroup->f:count()}>1">
+                            <span class="badge badge-secondary text-white">{reportGroup->f:count()}</span>
+                        </f:if>
+                    </td>
+                    <td style="vertical-align:middle;">
+                        <f:for each="{reportGroup}" as="reporting">
+                            <f:link.action action="editEvent" pageUid="{settings.reportingPid}" arguments="{event:reporting.event}">
+                                {reporting.event.eventStart->f:format.date(format:'d.m.Y')} &nbsp;{reporting.event.descriptionFirstLine}
+                            </f:link.action>
+                            <br />
+                        </f:for>
+                    </td>
+                    <td style="vertical-align:middle;">
+                        <f:if condition="{song.ccliOffering}>1">
+                            <f:then>
+                                <nobr>
+                                    {song.ccliId}
+                                    <f:if condition="{song.ccliId}>0">
+                                        <a href="https://reporting.ccli.com/search?s={song.ccliId}" target="olr" title="Lied bei CCLI melden">
+                                        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-713-announcement.svg#glyphicons-basic"/></svg>
+                                        </a>
+                                    </f:if>
+                                </nobr>
+                            </f:then>
+                            <f:else>
+                                <f:if condition="{song.ccliOffering}==1">
+                                    <f:then>
+                                        ---
+                                    </f:then>
+                                    <f:else>
+                                        ?
+                                    </f:else>
+                                </f:if>
+                            </f:else>
+                        </f:if>
+                    </td>
+                    <td style="vertical-align:middle;">
+                        <f:link.action action="complete" arguments="{reporting:reportGroup}" class="btn btn-primary btn-sm">
+                            <svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-739-check.svg#glyphicons-basic"/></svg>
+                        </f:link.action>
+                    </td>
+                </tr>
+            </f:groupedFor>
+        </table>
+
+	</f:then>
+    <f:else>
+    	<p>Keine offenen Liedmeldungen vorhanden.</p>
+    </f:else>
+</f:if>
+
+</f:section>

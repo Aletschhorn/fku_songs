@@ -1,0 +1,19 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+<h2>Lied-Informationen hinzufügen</h2>
+
+<f:flashMessages as="flashMessages">
+	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
+</f:flashMessages>
+
+<f:render partial="FormErrors" arguments="{object:Song}" />
+
+<f:form action="create" name="song" object="{song}" class="form-horizontal" >
+	<f:render partial="Song/FormFields" arguments="{song:song,sourceArray:sourceArray,keywords:keywords}" />
+
+	<br />
+	<f:link.action action="list" class="btn btn-outline-dark">Abbrechen</f:link.action>&nbsp;
+	<f:form.submit value="Speichern" class="btn btn-primary" />
+</f:form>
+</f:section>

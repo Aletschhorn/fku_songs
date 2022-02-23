@@ -1,0 +1,39 @@
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers}
+<table class="table">
+	<tr>
+		<th>Titel</th>
+		<th> </th>
+		<th>Sprache</th>
+		<th>Sammlung</th>
+		<th>Dokumente</th>
+		<th>CCLI-Liedmeldung</th>
+	</tr>
+
+	<f:for each="{reporting}" as="songreport">
+		<tr>
+			<td><f:link.action action="show" controller="Song" arguments="{song:songreport.song}" pageUid="{settings.songPid}"> {songreport.song.title}</f:link.action></td>
+			<td>
+				<f:if condition="{songreport.song.recommended}==1"><svg class="icon-md" width="32" height="32" fill="#D07601" alt="Kernlied"><use xlink:href="fileadmin/icon/glyphicons-basic-73-bookmark.svg#glyphicons-basic"/></svg></f:if>
+			</td>
+			<td>
+				<f:render partial="Song/Flags" arguments="{lang:songreport.song.language}" />
+			</td>
+			<td>
+				<f:render partial="Song/Collections" arguments="{collections:songreport.song.collection,separator:', ',complete:0}" />
+			</td>
+			<td>
+				<f:for each="{songreport.song.links->vhs:iterator.sort(sortBy:'type')}" as="link">
+					<f:if condition="{link.type}<3">
+                        <f:link.external uri="{link.url}" target="_blank">
+                            <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-37-file.svg#glyphicons-basic"/></svg> {link.title}
+                        </f:link.external>
+                        <br />
+					</f:if>
+				</f:for>
+			</td>
+			<td>
+				<f:render partial="Reporting/ColorCodeLong" arguments="{status:songreport.status}" />
+			</td>
+		</tr>
+	</f:for>
+</table>

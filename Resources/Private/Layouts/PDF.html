@@ -1,0 +1,14 @@
+{namespace fpdf=CodingMs\FluidFpdf\ViewHelpers}
+
+<fpdf:pdf filename="{filename}" title="{filename}" subject="" author="Freie Kirche Uster" keywords="" fontPath="fileadmin/fonts/fpdf">
+	<fpdf:addFont family="Calibri" style="N" filename="Calibri.php" />
+	<fpdf:addFont family="Calibri" style="B" filename="Calibrib.php" />
+	<fpdf:addFont family="Trebuchet" style="N" filename="Trebuc.php" />
+	<fpdf:addFont family="Trebuchet" style="B" filename="Trebucbd.php" />
+	<fpdf:setMargins left="10" top="10" right="10" />
+	<fpdf:setAutoPageBreak auto="0" />
+	<fpdf:aliasNbPages />
+
+	<f:render section="main" />
+
+</fpdf:pdf>

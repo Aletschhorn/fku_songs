@@ -1,0 +1,12 @@
+<f:layout name="Default" />
+<f:section name="main">
+
+<h2>Slugs erstellt</h2>
+<p>Neuer Slug für {list->f:count()} von {count} Songs:</p>
+<ul>
+	<f:for each="{list}" as="item">
+    	<li>{item.0} // {item.1} // {item.2}</li>
+    </f:for>
+</ul>
+
+</f:section>

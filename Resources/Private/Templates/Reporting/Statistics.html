@@ -1,0 +1,262 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<ul class="nav nav-pills my-4">
+    <li class="nav-item">
+    	<f:link.page pageUid="{settings.songPid}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-28-search.svg#glyphicons-basic"/></svg> Suchformular für Lieder
+        </f:link.page>
+    </li>
+    <li class="nav-item">
+    	<f:link.page pageUid="{settings.chartsPid}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-42-stats-bars.svg#glyphicons-basic"/></svg> Häufige Lieder
+        </f:link.page>
+    </li>
+    <li class="nav-item">
+    	<f:link.page pageUid="{settings.reportingPid}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-306-square-empty-play.svg#glyphicons-basic"/></svg> Lieder pro Gottesdienst
+        </f:link.page>
+    </li>
+</ul>
+
+<h3>Auswertungskriterien</h3>
+
+<div class="row">
+	<div class="col-12 col-xl-4">
+        <f:alias map="{selection:{24:'Gottesdienst',21:'Highwäg',0:'Beide'}}">
+            <nav>
+                <ul class="pagination">
+                    <f:for each="{selection}" as="sel" key="val">
+                        <f:if condition="{filter}=={val}">
+                            <f:then>
+                                <li class="page-item active"><a href="#" class="page-link">{sel}</a></li>
+                            </f:then>
+                            <f:else>
+                                <li class="page-item"><f:link.action class="page-link" action="statistics" arguments="{period:period,filter:val}">{sel}</f:link.action></li>
+                            </f:else>
+                        </f:if>
+                    </f:for>
+                </ul>
+            </nav>
+        </f:alias>
+    </div>
+	<div class="col-12 col-xl-8">
+        <nav>
+            <ul class="pagination mb-4">
+                <f:for each="{timeSelection}" as="sel">
+                    <f:if condition="{period}=={sel}">
+                        <f:then>
+                            <li class="page-item active"><a href="#" class="page-link">Letzte {sel} Monate</a></li>
+                        </f:then>
+                        <f:else>
+                            <li class="page-item"><f:link.action class="page-link" action="statistics" arguments="{period:sel,filter:filter}">Letzte {sel} Monate</f:link.action></li>
+                        </f:else>
+                    </f:if>
+                </f:for>
+            </ul>
+        </nav>
+	</div>
+</div>
+
+<h3>Mit Mehrfachnennungen</h3>
+<div class="row">
+	<div class="col-sm-6">
+
+		<table class="table">
+			<tr><th class="text-right">{sum}</th><th>Lieder, aufgeteilt nach Report-Status</th></tr>
+			<f:for each="{statistic.status}" as="songs" key="k">
+				<tr>
+					<td class="text-right">{songs->f:count()}</td>
+					<td>
+						<div id="status-{k}-close" class="d-block">
+							<a style="cursor:pointer" onclick="document.getElementById('status-{k}-open').className='d-block';document.getElementById('status-{k}-close').className='d-none'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg>&nbsp;<f:render partial="Reporting/ColorCodeLong" arguments="{status:k}" /></a>
+                            <f:if condition="{k}==0 && {songs->f:count()}>0"> &nbsp; &nbsp; <f:link.action action="open"><svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-31-pencil.svg#glyphicons-basic"/></svg> abarbeiten</f:link.action></f:if>
+						</div>
+						<div id="status-{k}-open" class="d-none">
+							<a style="cursor:pointer" onclick="document.getElementById('status-{k}-open').className='d-none';document.getElementById('status-{k}-close').className='d-block'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg>&nbsp;<f:render partial="Reporting/ColorCodeLong" arguments="{status:k}" /></a>
+                            <f:if condition="{k}==0 && {songs->f:count()}>0"> &nbsp; &nbsp; <f:link.action action="open"><svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-31-pencil.svg#glyphicons-basic"/></svg> abarbeiten</f:link.action></f:if>
+							<ul>
+								<f:for each="{songs}" as="song">
+									<li>
+										<f:for each="{song.collection}" as="coll" iteration="it">
+											<f:if condition="{coll.rejected}">
+												<f:then>
+													<del>{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if></del><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:then>
+												<f:else>
+													{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:else>
+											</f:if>
+										</f:for>
+										<b><f:link.action action="show" controller="Song" arguments="{song:song}" pageUid="{settings.songPid}">{song.title}</f:link.action></b>
+									</li>
+								</f:for>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</f:for>
+		</table>
+
+	</div>
+	<div class="col-sm-6">
+
+		<table class="table">
+			<tr><th class="text-right">{sum}</th><th>Lieder, aufgeteilt nach Sprache</th></tr>
+			<f:for each="{statistic.language}" as="songs" key="k">
+				<tr>
+					<td class="text-right">{songs->f:count()}</td>
+					<td>
+						<div id="lang-{k}-close" class="d-block">
+							<a style="cursor:pointer" onclick="document.getElementById('lang-{k}-open').className='d-block';document.getElementById('lang-{k}-close').className='d-none'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg>&nbsp;&nbsp;<f:render partial="Song/Flags" arguments="{lang:k}" /></a>
+						</div>
+						<div id="lang-{k}-open" class="d-none">
+							<a style="cursor:pointer" onclick="document.getElementById('lang-{k}-open').className='d-none';document.getElementById('lang-{k}-close').className='d-block'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg>&nbsp;&nbsp;<f:render partial="Song/Flags" arguments="{lang:k}" /></a>
+							<ul>
+								<f:for each="{songs}" as="song">
+									<li>
+										<f:for each="{song.collection}" as="coll" iteration="it">
+											<f:if condition="{coll.rejected}">
+												<f:then>
+													<del>{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if></del><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:then>
+												<f:else>
+													{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:else>
+											</f:if>
+										</f:for>
+										<b><f:link.action action="show" controller="Song" arguments="{song:song}" pageUid="{settings.songPid}">{song.title}</f:link.action></b>
+									</li>
+								</f:for>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</f:for>
+		</table>
+
+	</div>
+</div>
+<br />
+
+<h3>Ohne Mehrfachnennungen</h3>
+<div class="row">
+	<div class="col-sm-6">
+
+		<table class="table">
+			<tr><th class="text-right">{sumUnique}</th><th>Lieder, aufgeteilt nach CCLI-Status</th></tr>
+			<f:for each="{statistic.ccli}" as="songs" key="k">
+				<tr>
+					<td class="text-right">{songs->f:count()}</td>
+					<td>
+						<div id="ccli-{k}-close" class="d-block">
+							<a style="cursor:pointer" onclick="document.getElementById('ccli-{k}-open').className='d-block';document.getElementById('ccli-{k}-close').className='d-none'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg>&nbsp;<f:render partial="Song/CcliOfferingLong" arguments="{offering:k}" /></a>
+						</div>
+						<div id="ccli-{k}-open" class="d-none">
+							<a style="cursor:pointer" onclick="document.getElementById('ccli-{k}-open').className='d-none';document.getElementById('ccli-{k}-close').className='d-block'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg>&nbsp;<f:render partial="Song/CcliOfferingLong" arguments="{offering:k}" /></a>
+							<ul>
+								<f:for each="{songs}" as="song">
+									<li>
+										<f:for each="{song.collection}" as="coll" iteration="it">
+											<f:if condition="{coll.rejected}">
+												<f:then>
+													<del>{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if></del><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:then>
+												<f:else>
+													{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:else>
+											</f:if>
+										</f:for>
+										<b><f:link.action action="show" controller="Song" arguments="{song:song}" pageUid="{settings.songPid}">{song.title}</f:link.action></b>
+									</li>
+								</f:for>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</f:for>
+		</table>
+
+	</div>
+	<div class="col-sm-6">
+
+		<table class="table">
+			<tr><th class="text-right">{sumUnique}</th><th> Lieder, aufgeteilt nach Anzahl Stichwörtern</th></tr>
+			<f:for each="{statistic.keywords}" as="songs" key="k">
+				<tr>
+					<td class="text-right">{songs->f:count()}</td>
+					<td>
+						<div id="kw-{k}-close" class="d-block">
+							<a style="cursor:pointer" onclick="document.getElementById('kw-{k}-open').className='d-block';document.getElementById('kw-{k}-close').className='d-none'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg>&nbsp;<f:if condition="{k}==1"><f:then>1 Stichwort</f:then><f:else>{k} Stichwörter</f:else></f:if></a>
+						</div>
+						<div id="kw-{k}-open" class="d-none">
+							<a style="cursor:pointer" onclick="document.getElementById('kw-{k}-open').className='d-none';document.getElementById('kw-{k}-close').className='d-block'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg>&nbsp;<f:if condition="{k}==1"><f:then>1 Stichwort</f:then><f:else>{k} Stichwörter</f:else></f:if></a>
+							<ul>
+								<f:for each="{songs}" as="song">
+									<li>
+										<f:for each="{song.collection}" as="coll" iteration="it">
+											<f:if condition="{coll.rejected}">
+												<f:then>
+													<del>{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if></del><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:then>
+												<f:else>
+													{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:else>
+											</f:if>
+										</f:for>
+										<b><f:link.action action="show" controller="Song" arguments="{song:song}" pageUid="{settings.songPid}">{song.title}</f:link.action></b>
+									</li>
+								</f:for>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</f:for>
+		</table>
+
+	</div>
+</div>
+<br />
+
+<div class="row">
+	<div class="col-sm-6">
+
+		<table class="table">
+			<tr><th class="text-right">{sumUnique}</th><th>Lieder, aufgeteilt nach Liedtext</th></tr>
+			<f:for each="{statistic.songtext}" as="songs" key="k">
+				<tr>
+					<td class="text-right">{songs->f:count()}</td>
+					<td>
+						<div id="songtext-{k}-close" class="d-block">
+							<a style="cursor:pointer" onclick="document.getElementById('songtext-{k}-open').className='d-block';document.getElementById('songtext-{k}-close').className='d-none'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg>&nbsp;Songs {f:if(condition:'{k}',then:'mit',else:'ohne')} Liedtext</a>
+						</div>
+						<div id="songtext-{k}-open" class="d-none">
+							<a style="cursor:pointer" onclick="document.getElementById('songtext-{k}-open').className='d-none';document.getElementById('songtext-{k}-close').className='d-block'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg>&nbsp;Songs {f:if(condition:'{k}',then:'mit',else:'ohne')} Liedtext</a>
+							<ul>
+								<f:for each="{songs}" as="song">
+									<li>
+										<f:for each="{song.collection}" as="coll" iteration="it">
+											<f:if condition="{coll.rejected}">
+												<f:then>
+													<del>{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if></del><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:then>
+												<f:else>
+													{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+												</f:else>
+											</f:if>
+										</f:for>
+										<b><f:link.action action="show" controller="Song" arguments="{song:song}" pageUid="{settings.songPid}">{song.title}</f:link.action></b>
+									</li>
+								</f:for>
+							</ul>
+						</div>
+					</td>
+				</tr>
+			</f:for>
+		</table>
+
+	</div>
+</div>
+
+</f:section>

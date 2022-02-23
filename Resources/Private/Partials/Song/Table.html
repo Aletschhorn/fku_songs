@@ -1,0 +1,66 @@
+<f:spaceless>
+	<div class="d-none d-sm-block">
+        <table class="table">
+            <tr>
+                <th>Titel</th>
+                <th> </th>
+                <th>Sprache</th>
+                <f:if condition="{filter.showTone}">
+	                <th>Tonart</th>
+                </f:if>
+                <th>Sammlung</th>
+                <f:if condition="{filter.showLastUsage}">
+                	<th>Letzte Verwendung</th>
+                </f:if>
+                <f:if condition="{filter.showPopularity}">
+                	<th>Beliebtheit</th>
+                </f:if>
+                <f:if condition="{filter.showCopyright}">
+                	<th>Copyright</th>
+                </f:if>
+            </tr>
+        
+            <f:for each="{songs}" as="song">
+                <tr>
+                    <td><f:link.action action="show" arguments="{song:song}">{song.title}</f:link.action></td>
+                    <td>
+                        <f:if condition="{song.recommended}==1">
+                        	<svg class="icon-md" width="32" height="32" fill="#D07601" title="Kernlied" alt="Kernlied"><use xlink:href="fileadmin/icon/glyphicons-basic-73-bookmark.svg#glyphicons-basic"/></svg>
+                        </f:if>
+                    </td>
+                    <td><f:render partial="Song/Flags" arguments="{lang:song.language}" /></td>
+	                <f:if condition="{filter.showTone}">
+    	                <td>{song.tone}</td>
+                    </f:if>
+                    <td><f:render partial="Song/Collections" arguments="{collections:song.collection,separator:', ',complete:0}" /></td>
+                    </td>
+                    <f:if condition="{filter.showLastUsage}">
+                    	<f:if condition="{song.lastUsage}">
+                        	<f:then>
+                            	<td>{song.lastUsage->f:format.date(format:'d.m.Y')}</td>
+                            </f:then>
+                            <f:else>
+                            	<td>Nie seit Mai 2016</td>
+                            </f:else>
+                        </f:if>
+                    </f:if>
+                    <f:if condition="{filter.showPopularity}">
+                        <td><f:render partial="Song/Popularity" arguments="{popularity:song.popularity}" /></td>
+                    </f:if>
+                    <f:if condition="{filter.showCopyright}">
+                        <td><f:render partial="Song/TextCopyright" arguments="{songtextCopyright:song.songtextCopyright,short:1}" /></td>
+                    </f:if>
+                </tr>
+            </f:for>
+        </table>
+    </div>
+    
+    <div class="d-block d-sm-none">
+        <f:for each="{songs}" as="song">
+        	<hr />
+            <h3><f:link.action action="show" arguments="{song:song}">{song.title}</f:link.action></h3>
+            <p>Sammlung: <f:render partial="Song/Collections" arguments="{collections:song.collection,separator:', ',complete:0}" /><f:if condition="{song.recommended}==1">, <svg class="icon-sm" width="24" height="24" fill="#D07601"><use xlink:href="fileadmin/icon/glyphicons-basic-73-bookmark.svg#glyphicons-basic"/></svg> Kernlied</f:if></p>
+            <p><f:render partial="Song/Flags" arguments="{lang:song.language}" /> &nbsp; <f:render partial="Song/Popularity" arguments="{popularity:song.popularity}" /></p>
+        </f:for>
+	</div>
+</f:spaceless>

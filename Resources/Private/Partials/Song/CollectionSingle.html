@@ -1,0 +1,16 @@
+<f:if condition="{collections}">
+	<f:for each="{collections}" as="collection">
+		<f:if condition="{collection.source.uid}=={source}">
+			<f:if condition="{collection.number}>0">
+				<f:if condition="{collection.rejected}">
+					<f:then>
+						<span class="text-muted"><f:if condition="{complete}">Nr.&nbsp;</f:if>{collection.number}</span>
+					</f:then>
+					<f:else>
+						<f:if condition="{complete}">Nr.&nbsp;</f:if>{collection.number}
+					</f:else>
+				</f:if>
+			</f:if>
+		</f:if>
+	</f:for>
+</f:if>

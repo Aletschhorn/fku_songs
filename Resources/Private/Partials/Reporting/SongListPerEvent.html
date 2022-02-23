@@ -1,0 +1,31 @@
+<div id="{prefix}event{event.uid}close" class="d-block">
+    <a style="cursor:pointer" onclick="document.getElementById('{prefix}event{event.uid}open').className='d-block';document.getElementById('{prefix}event{event.uid}close').className='d-none'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg>&nbsp;<f:count subject="{event.songreporting}" />&nbsp;<f:if condition="{event.songreporting->f:count()}==1"><f:then>Lied</f:then><f:else>Lieder</f:else></f:if></a>
+    <f:security.ifHasRole role="Musik-Admin">
+        <f:for each="{event.songreporting}" as="songreport">
+            <f:render partial="Reporting/ColorCode" arguments="{status:songreport.status}" />
+        </f:for>
+    </f:security.ifHasRole>
+</div>
+<div id="{prefix}event{event.uid}open" class="d-none">
+    <a style="cursor:pointer" onclick="document.getElementById('{prefix}event{event.uid}open').className='d-none';document.getElementById('{prefix}event{event.uid}close').className='d-block'"><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg>&nbsp;<f:count subject="{event.songreporting}" />&nbsp;<f:if condition="{event.songreporting->f:count()}==1"><f:then>Lied</f:then><f:else>Lieder</f:else></f:if></a>
+    <ul>
+        <f:for each="{event.songreporting}" as="songreport">
+            <li>
+                <f:for each="{songreport.song.collection}" as="coll" iteration="it">
+                    <f:if condition="{coll.rejected}">
+                        <f:then>
+                            <del>{coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if></del><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+                        </f:then>
+                        <f:else>
+                            {coll.source.acronym}<f:if condition="{coll.number}">&nbsp;{coll.number}</f:if><f:if condition="{it.isLast}"><f:then>: </f:then><f:else>, </f:else></f:if>
+                        </f:else>
+                    </f:if>
+                </f:for>
+                <b><f:link.action action="show" controller="Song" arguments="{song:songreport.song}" pageUid="{settings.songPid}">{songreport.song.title}</f:link.action></b>
+                <f:security.ifHasRole role="Musik-Admin">
+                    <f:render partial="Reporting/ColorCode" arguments="{status:songreport.status}" />
+                </f:security.ifHasRole>
+            </li>
+        </f:for>
+    </ul>
+</div>

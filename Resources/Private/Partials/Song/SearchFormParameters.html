@@ -1,0 +1,93 @@
+{namespace sv=FKU\FkuSongs\ViewHelpers}
+
+<div class="row bg-light pt-2">
+    <div class="col-sm-6 col-12">
+        <div class="row form-group">
+            <legend class="col-sm-4 col-form-label pt-0">Sammlungen</legend>
+	        <div class="col-sm-8">
+    	        <f:for each="{sources}" as="s">
+		            <div class="form-check">
+        	            <label class="form-check-label">
+            	            <f:form.checkbox class="form-check-input" name="{inputFieldName}[source][{s.uid}]" checked="{sv:ifInArray(haystack:filter.source,needle:s.uid,then:1)}==1" value="1" disabled="{f:if(condition:'{disabled}==1',then:'1')}" />{s.title}
+                	    </label>
+                    </div>
+                </f:for>
+	            <div class="form-check">
+   		            <label class="form-check-label">
+  	     	            <f:form.checkbox class="form-check-input" name="{inputFieldName}[source][0]" checked="{sv:ifInArray(haystack:filter.source,needle:0,then:1)}==1" value="1" disabled="{f:if(condition:'{disabled}==1',then:'1')}" />Keine
+            	    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <legend class="col-sm-4 col-form-label pt-0">Parameter</legend>
+            <div class="col-sm-8">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <f:form.checkbox class="form-check-input" name="{inputFieldName}[lyrics]" checked="{filter.lyrics}==1" value="1" disabled="{f:if(condition:'{disabled}==1',then:'1')}" /> Auch Liedtexte durchsuchen
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <f:form.checkbox class="form-check-input" name="{inputFieldName}[recommended]" checked="{filter.recommended}==1" value="1" disabled="{f:if(condition:'{disabled}==1',then:'1')}" />Aus RG und SMU nur Kernlieder zeigen
+                        <span data-toggle="tooltip" data-placement="bottom" title="Die Kernlieder stellen ein Grund-Repertoire von (alt-)bekannten Liedern aus RG und SMU dar, welche der Gemeinde bekannt sind.">
+                        	<svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-635-circle-question.svg#glyphicons-basic"/></svg>
+                        </span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-sm-6 col-12">
+        <div class="row form-group">
+            <legend class="col-sm-4 col-form-label pt-0">Sprache</legend>
+            <div class="col-sm-8">
+                <f:for each="{1:{long:'Deutsch',short:'de'},2:{long:'Schweizerdeutsch',short:'ch'},3:{long:'Englisch',short:'en'},9:{long:'Andere',short:'xx'}}" as="lang" key="id">
+	                <div class="form-check">
+                        <label class="form-check-label">
+                            <f:form.checkbox class="form-check-input" name="{inputFieldName}[language][{id}]" checked="{sv:ifInArray(haystack:filter.language,needle:id,then:1)}==1" value="1" disabled="{f:if(condition:'{disabled}==1',then:'1')}" /><f:image src="EXT:fku_songs/Resources/Public/flag_{lang.short}.svg" class="icon-sm" alt="{lang.long}" /> {lang.long}
+                        </label>
+                    </div>
+                </f:for>
+            </div>
+        </div>
+        <div class="row form-group">
+            <legend class="col-sm-4 col-form-label pt-0">Sortierung</legend>
+            <div class="col-sm-8">
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <f:form.radio class="form-check-input" name="{inputFieldName}[sorting]" checked="{filter.sorting}=='title'" value="title" disabled="{f:if(condition:'{disabled}==1',then:'1')}" />nach Titel
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <f:form.radio class="form-check-input" name="{inputFieldName}[sorting]" checked="{filter.sorting}=='source'" value="source" disabled="{f:if(condition:'{disabled}==1',then:'1')}" />nach Sammlung
+                    </label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label">
+                        <f:form.radio class="form-check-input" name="{inputFieldName}[sorting]" checked="{filter.sorting}=='popularity'" value="popularity" disabled="{f:if(condition:'{disabled}==1',then:'1')}" />nach Beliebtheit
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <legend class="col-sm-4 col-form-label pt-0">Anzeigen</legend>
+            <div class="col-sm-8">
+                <div class="form-check">
+                    <label class="form-check-label"><f:form.checkbox class="form-check-input" name="{inputFieldName}[showTone]" checked="{filter.showTone}" value="1" /> Tonart</label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label"><f:form.checkbox class="form-check-input" name="{inputFieldName}[showLastUsage]" checked="{filter.showLastUsage}" value="1" /> Letzte Verwendung</label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label"><f:form.checkbox class="form-check-input" name="{inputFieldName}[showPopularity]" checked="{filter.showPopularity}" value="1" /> Beliebheit</label>
+                </div>
+                <div class="form-check">
+                    <label class="form-check-label"><f:form.checkbox class="form-check-input" name="{inputFieldName}[showCopyright]" checked="{filter.showCopyright}" value="1" /> Liedtext-Copyright</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

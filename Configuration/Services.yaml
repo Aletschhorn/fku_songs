@@ -1,0 +1,24 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  FKU\FkuSongs\:
+    resource: '../Classes/*'
+    exclude: '../Classes/Domain/Model/*'
+
+  FKU\FkuSongs\UserFunctions\FormEngine\SlugPrefix:
+    public: true
+
+  FKU\FkuSongs\Command\LastUsageCommand:
+    tags:
+      - name: 'console.command'
+        command: 'fku_songs:lastUsage'
+        description: 'Evaluates the date of last usage per song'
+
+  FKU\FkuSongs\Command\PopularityCommand:
+    tags:
+      - name: 'console.command'
+        command: 'fku_songs:popularity'
+        description: 'Evaluates the popularity per song'

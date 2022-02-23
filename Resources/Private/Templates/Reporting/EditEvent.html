@@ -1,0 +1,197 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<div class="card my-3">
+    <div class="card-body">
+    	<h3 class="card-title">{event.descriptionFirstLine} | {event.eventStart->f:format.date(format:'d.m.y, G.i')} Uhr</h3>
+        <f:if condition="{event.descriptionRest}">
+            <p class="card-text"><f:format.nl2br>{event.descriptionRest}</f:format.nl2br></p>
+        </f:if>
+        <f:if condition="{master}">
+            <f:link.action action="show" extensionName="fkuplanning" pluginName="serviceplan" controller="Master" arguments="{master:master}" pageUid="{settings.planningPid}" class="card-link">
+                <svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg>
+                Gottesdienst-Details (GD-Plan)
+            </f:link.action>
+        </f:if>
+    </div>
+</div>
+
+<h2>Liederliste ändern</h2>
+
+<ul class="nav nav-pills my-3">
+    <li class="nav-item">
+    	<f:link.action action="showEvent" arguments="{event:event}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-223-chevron-left.svg#glyphicons-basic"/></svg> Zurück
+        </f:link.action>
+    </li>
+    <li class="nav-item">
+    	<f:link.action action="new" arguments="{event:event}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-371-plus.svg#glyphicons-basic"/></svg> Weiteres Lied
+        </f:link.action>
+    </li>
+</ul>
+
+<f:flashMessages as="flashMessages">
+	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
+</f:flashMessages>
+
+<f:comment> Non-XS view </f:comment>
+<div class="d-none d-sm-block">
+    <f:form action="updateEvent" name="reporting" class="form-horizontal">
+        <f:form.hidden name="event" value="{event.uid}" />
+        
+        <table class="table">
+            <tr>
+                <th>Titel</th>
+                <th>Sammlung</th>
+                <th>Rechte</th>
+                <th>CCLI</th>
+                <th>CCLI-Liedmeldung</th>
+                <th> </th>
+            </tr>
+        
+            <f:for each="{reporting}" as="songreport">
+                <tr>
+                    <td style="vertical-align:middle;">{songreport.song.title}</td>
+                    <td style="vertical-align:middle;">
+                        <f:render partial="Song/Collections" arguments="{collections:songreport.song.collection,separator:', ',complete:0}" />
+                    </td>
+                    <td style="vertical-align:middle;">
+                        <f:switch expression="{songreport.song.copyright}">
+                            <f:case value="1">PD</f:case>
+                            <f:case value="2">FKU</f:case>
+                            <f:case value="3">frei</f:case>
+                        </f:switch>
+                    </td>
+                    <td style="vertical-align:middle;">
+                        <f:if condition="{songreport.song.ccliOffering}>1">
+                            <f:then>
+                                <nobr>
+                                    {songreport.song.ccliId}
+                                    <f:if condition="{songreport.song.ccliId}>0">
+                                        <a href="https://reporting.ccli.com/search?s={songreport.song.ccliId}" target="olr" title="Lied bei CCLI melden">
+                                        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-713-announcement.svg#glyphicons-basic"/></svg>
+                                        </a>
+                                    </f:if>
+                                </nobr>
+                            </f:then>
+                            <f:else>
+                                <f:if condition="{songreport.song.ccliOffering}==1">
+                                    <f:then>
+                                        ---
+                                    </f:then>
+                                    <f:else>
+                                        ?
+                                    </f:else>
+                                </f:if>
+                            </f:else>
+                        </f:if>
+                    </td>
+                    <td>
+                        <select name="{songreport.uid}" class="form-control reportingstatus">
+                            <f:for each="{status}" as="stat" key="key">
+                                <f:if condition="{songreport.status}=={key}">
+                                    <f:then>
+                                        <option value="{key}" selected="selected">{stat}</option>
+                                    </f:then>
+                                    <f:else>
+                                        <option value="{key}">{stat}</option>
+                                    </f:else>
+                                </f:if>
+                            </f:for>
+                        </select>
+                    </td>
+                    <td style="vertical-align:middle;">
+                        <f:link.action action="delete" arguments="{reporting:songreport}" additionalAttributes="{title:'Lied aus Liste löschen',onclick: 
+    'return confirm(\'Soll dieses Lied wirklich aus der Liste gelöscht werden?\')'}" class="btn btn-danger btn-sm">
+    						<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-17-bin.svg#glyphicons-basic"/></svg>
+                        </f:link.action>
+                    </td>
+                </tr>
+            </f:for>
+        </table>
+	</f:form>
+</div>
+
+<f:comment> XS view </f:comment>
+<div class="d-block d-sm-none">
+    <f:form action="updateEventXS" name="reporting" class="">
+        <f:form.hidden name="event" value="{event.uid}" />
+        <hr />
+        <f:for each="{reporting}" as="songreport">
+            <div class="float-right">
+                <f:link.action action="delete" arguments="{reporting:songreport}" additionalAttributes="{title:'Lied aus Liste löschen',onclick: 
+'return confirm(\'Soll dieses Lied wirklich aus der Liste gelöscht werden?\')'}" class="btn btn-danger btn-sm">
+                    <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-17-bin.svg#glyphicons-basic"/></svg>
+                </f:link.action>
+            </div>
+            <h3>{songreport.song.title}</h3>
+            <p>
+                <f:render partial="Song/Collections" arguments="{collections:songreport.song.collection,separator:', ',complete:0}" /><br />
+                CCLI: 
+                <f:if condition="{songreport.song.ccliOffering}>1">
+                    <f:then>
+                        <nobr>
+                            {songreport.song.ccliId}
+                            <f:if condition="{songreport.song.ccliId}>0">
+                                <a href="https://reporting.ccli.com/search?s={songreport.song.ccliId}" target="olr" title="Lied bei CCLI melden">
+                                    <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-713-announcement.svg#glyphicons-basic"/></svg>
+                                </a>
+                            </f:if>
+                        </nobr>
+                    </f:then>
+                    <f:else>
+                        <f:if condition="{songreport.song.ccliOffering}==1">
+                            <f:then>
+                                ---
+                            </f:then>
+                            <f:else>
+                                ?
+                            </f:else>
+                        </f:if>
+                    </f:else>
+                </f:if>
+                <f:switch expression="{song.copyright}">
+                    <f:case value="1"> PD</f:case>
+                    <f:case value="2"> FKU</f:case>
+                    <f:case value="3"> frei</f:case>
+                </f:switch>
+            </p>
+            <select name="XS{songreport.uid}" class="form-control reportingstatus">
+                <f:for each="{status}" as="stat" key="key">
+                    <f:if condition="{songreport.status}=={key}">
+                        <f:then>
+                            <option value="{key}" selected="selected">{stat}</option>
+                        </f:then>
+                        <f:else>
+                            <option value="{key}">{stat}</option>
+                        </f:else>
+                    </f:if>
+                </f:for>
+            </select>
+    		<hr />
+        </f:for>
+	</f:form>
+</div>
+
+<script language="javascript">
+	$('.reportingstatus').change(function() {
+		var reportId = this.name;
+		if (reportId.substring(0,2) == 'XS') {
+			reportId = reportId.substring(2);
+		}
+		$.ajax({
+			method: "POST",
+			url: "?songReportingStatusUpdate="+reportId,
+			data: {status: this.value},
+			success: function(data) {
+				if (data == 0) {
+					alert('Fehler beim Speichern');
+				}
+			}
+		});
+	});
+</script>
+
+</f:section>

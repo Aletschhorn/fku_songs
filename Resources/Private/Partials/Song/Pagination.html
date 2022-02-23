@@ -1,0 +1,43 @@
+{namespace sv=FKU\FkuSongs\ViewHelpers}
+
+<nav>
+	<ul class="pagination">
+		<f:if condition="{page.now}>1">
+			<f:then>
+				<li class="page-item"><f:link.action class="page-link" action="{action}" arguments="{page:page.prev}">&laquo;</f:link.action></li>
+			</f:then>
+			<f:else>
+				<li class="page-item disabled"><f:link.action class="page-link" action="{action}" arguments="{page:page.prev,event:event}">&laquo;</f:link.action></li>
+			</f:else>
+		</f:if>
+		<f:for each="{pagearray}" as="pageno">
+			<f:if condition="{pageno}=='...'">
+				<f:then>
+					<li class="page-item disabled">
+						<f:link.action action="{action}" class="page-link" arguments="{page:page.now,event:event}">...</f:link.action>
+					</li>
+				</f:then>
+				<f:else>
+					<f:if condition="{pageno}=={page.now}">
+						<f:then>
+							<li class="page-item active"><a href="#" class="page-link">{pageno} <span class="sr-only">(aktuelle Seite)</span></a></li>
+						</f:then>
+						<f:else>
+							<li class="page-item">
+								<f:link.action action="{action}" class="page-link" arguments="{page:pageno,event:event}">{pageno}</f:link.action>
+							</li>
+						</f:else>
+					</f:if>
+				</f:else>
+			</f:if>
+		</f:for>
+		<f:if condition="{page.now}<{page.total}">
+			<f:then>
+				<li class="page-item"><f:link.action class="page-link" action="{action}" arguments="{page:page.next,event:event}">&raquo;</f:link.action></li>
+			</f:then>
+			<f:else>
+				<li class="page-item disabled"><f:link.action class="page-link" action="{action}" arguments="{page:page.next,event:event}">&raquo;</f:link.action></li>
+			</f:else>
+		</f:if>
+	</ul>
+</nav>

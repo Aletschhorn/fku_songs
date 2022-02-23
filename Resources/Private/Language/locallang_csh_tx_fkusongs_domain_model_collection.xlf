@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-08-10T13:26:20Z" product-name="fku_songs">
+		<header/>
+		<body>
+			<trans-unit id="number.description">
+				<source>number</source>
+			</trans-unit>
+			<trans-unit id="source.description">
+				<source>source</source>
+			</trans-unit>
+			<trans-unit id="rejected.description">
+				<source>rejected</source>
+			</trans-unit>
+			<trans-unit id="slide.description">
+				<source>slide</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

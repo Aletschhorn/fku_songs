@@ -1,0 +1,17 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<h2>{event.descriptionFirstLine} {event.eventStart->f:format.date(format:'d.m.y, G.i')} Uhr</h2>
+
+<f:flashMessages as="flashMessages">
+	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
+</f:flashMessages>
+
+<p><f:format.nl2br>{event.descriptionRest}</f:format.nl2br></p>
+<br />
+
+<f:link.action action="list" class="btn btn-default">Zurück</f:link.action>
+<f:link.action action="new" arguments="{event:event}" class="btn btn-primary">Lied auswählen</f:link.action>
+
+</f:section>

@@ -1,0 +1,36 @@
+<f:spaceless>
+<f:switch expression="{back.action}">
+	<f:case value="reportList">
+		<f:link.action action="list" controller="Reporting" pluginName="Reporting" pageUid="{back.pid.reporting}" class="btn btn-primary">Zurück</f:link.action>
+	</f:case>
+	<f:case value="reportShowCharts">
+		<f:link.action action="showCharts" controller="Reporting" pluginName="Charts" pageUid="{back.pid.charts}" class="btn btn-primary">Zurück</f:link.action>
+	</f:case>
+	<f:case value="reportShowStatistics">
+		<f:link.action action="statistics" controller="Reporting" pluginName="Statistics" pageUid="{back.pid.statistics}" class="btn btn-primary">Zurück</f:link.action>
+	</f:case>
+	<f:case value="reportShowEvent">
+		<f:link.action action="showEvent" controller="Reporting" pluginName="Reporting" arguments="{event:back.id}" pageUid="{back.pid.reporting}" class="btn btn-primary">Zurück</f:link.action>
+	</f:case>
+	<f:case value="songList">
+		<f:link.action action="list" controller="Song" pluginName="List" pageUid="{back.pid.song}" class="btn btn-primary">Zurück</f:link.action>
+	</f:case>
+	<f:case value="songKeyword">
+		<f:link.action action="keyword" controller="Song" pluginName="List" pageUid="{back.pid.song}" class="btn btn-primary">Zurück</f:link.action>
+	</f:case>
+	<f:case value="songToc">
+		<f:link.action action="toc" controller="Song" pluginName="List" pageUid="{back.pid.song}" class="btn btn-primary">Zurück</f:link.action>
+	</f:case>
+	<f:case value="songShow">
+		<f:link.action action="show" controller="Song" pluginName="List" arguments="{song:back.id}" pageUid="{back.pid.song}" class="btn btn-primary">Zurück</f:link.action>
+	</f:case>
+	<f:defaultCase>
+		<f:link.action action="{back.default.action}" pluginName="{back.default.plugin}" controller="{back.default.controller}" class="btn btn-primary">Zurück</f:link.action>
+	</f:defaultCase>
+</f:switch>
+
+<f:comment>
+<button type="button" onclick="history.back()" class="btn btn-primary">Zurück</button>
+</f:comment>
+
+</f:spaceless>

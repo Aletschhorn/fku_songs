@@ -1,0 +1,111 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<f:flashMessages as="flashMessages">
+	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
+</f:flashMessages>
+
+<ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+    	<f:link.page pageUid="{settings.songPid}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-28-search.svg#glyphicons-basic"/></svg> Suchformular für Lieder
+        </f:link.page>
+    </li>
+    <li class="nav-item">
+    	<f:link.page pageUid="{settings.chartsPid}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-42-stats-bars.svg#glyphicons-basic"/></svg> Häufige Lieder
+        </f:link.page>
+    </li>
+	<f:security.ifHasRole role="Musik-Admin">
+        <li class="nav-item">
+            <f:link.page pageUid="{settings.chartsPid}" class="nav-link">
+              	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-670-dashboard.svg#glyphicons-basic"/></svg> Statistiken
+            </f:link.page>
+        </li>
+	</f:security.ifHasRole>
+</ul>
+
+<h2>Letzte 3 Monate</h2>
+
+<f:if condition="{reportings}">
+	<f:then>
+
+		<f:comment> Table for non-XS view </f:comment>
+        <div class="d-none d-sm-block">
+            <table class="table">
+                <f:for each="{reportings}" as="event">
+                    <tr>
+                        <td width="10%"><f:link.action action="showEvent" arguments="{event:event}">{event.eventStart->f:format.date(format:'d.m.y')}</f:link.action></td>
+                        <td width="15%">{event.category.title}</td>
+                        <td width="65%">
+                            <f:render partial="Reporting/SongListPerEvent" arguments="{event:event}" />
+                        </td>
+                        <td width="10%" class="text-right">
+                            <f:security.ifHasRole role="Musik-Admin">
+                                <f:link.action action="editEvent" arguments="{event:event}" additionalAttributes="{title:'Reporting editieren'}">
+                                    <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-31-pencil.svg#glyphicons-basic"/></svg>
+                                </f:link.action>
+                                <f:link.action action="new" arguments="{event:event}" additionalAttributes="{title:'Lied hinzufügen'}">
+                                    <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-371-plus.svg#glyphicons-basic"/></svg>
+                                </f:link.action>
+                            </f:security.ifHasRole>
+                        </td>
+                    </tr>		
+                </f:for>
+            </table>
+        </div>
+
+		<f:comment> Table for XS view </f:comment>
+        <div class="d-block d-sm-none">
+        	<hr />
+			<f:for each="{reportings}" as="event">
+            	<p>
+                	<b><f:link.action action="showEvent" arguments="{event:event}">{event.eventStart->f:format.date(format:'d.m.y')}</f:link.action> &nbsp; {event.category.title}</b>
+					<f:security.ifHasRole role="Musik-Admin">
+	                    <span class="float-right">
+							<f:link.action action="editEvent" arguments="{event:event}" additionalAttributes="{title:'Reporting editieren'}">
+                            	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-31-pencil.svg#glyphicons-basic"/></svg>
+                            </f:link.action>
+							<f:link.action action="new" arguments="{event:event}" additionalAttributes="{title:'Lied hinzufügen'}">
+                            	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-371-plus.svg#glyphicons-basic"/></svg>
+                            </f:link.action>
+	                    </span>
+					</f:security.ifHasRole>
+                </p>
+               	<f:render partial="Reporting/SongListPerEvent" arguments="{event:event,prefix:'xs'}" />
+                <hr />
+			</f:for>
+		</div>
+	</f:then>
+	<f:else>
+		<p>Keine Anlässe mit Liedern in den letzten 3 Monaten gefunden.</p>
+	</f:else>
+</f:if>
+
+<f:security.ifHasRole role="Musik-Admin">
+	<br />
+	<h2>Lieder für weiteren Anlass erfassen</h2>
+	
+	<f:if condition="{newEvents}">
+		<f:then>
+			<table class="table">
+				<f:for each="{newEvents}" as="event">
+					<tr>
+						<td width="10%">
+							<f:link.action action="new" arguments="{event:event}">{event.eventStart->f:format.date(format:'d.m.y')}</f:link.action>
+						</td>
+						<td width="15%">{event.category.title}</td>
+						<td width="65%" class="hidden-xs">{event.description->f:format.nl2br()}</td>
+						<td width="10%" class="hidden-xs"></td>
+					</tr>						
+				</f:for>
+			</table>
+		</f:then>
+		<f:else>
+			<p>Keine Anlässe ohne Liederinformationen in den nächsten Tagen</p>
+		</f:else>
+	</f:if>
+</f:security.ifHasRole>
+
+</f:section>

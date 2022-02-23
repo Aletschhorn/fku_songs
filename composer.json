@@ -1,0 +1,23 @@
+{
+   "name": "FKU/fku-songs",
+   "description": "Songs administration extension for Freie Kirche Uster",
+   "license": "GPL-2.0-or-later",
+   "type": "typo3-cms-extension",
+   "authors": {
+      "name": "Daniel Widmer",
+      "email": "daniel.widmer@fku.ch"
+   },
+   "require": {
+      "typo3/cms-core": "^9.5 || ^10.4 || ^11.0"
+   },
+   "extra": {
+      "typo3/cms": {
+         "extension-key": "fku_songs"
+      }
+   },
+   "autoload": {
+      "psr-4": {
+         "FKU\\FkuSongs\\": "Classes/"
+      }
+   }
+}

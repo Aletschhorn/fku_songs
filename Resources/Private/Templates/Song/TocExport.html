@@ -1,0 +1,192 @@
+{namespace fpdf=CodingMs\FluidFpdf\ViewHelpers}
+{namespace sv=FKU\FkuSongs\ViewHelpers}
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
+{namespace p=FKU\FkuPlanning\ViewHelpers}
+
+<f:layout name="PDF" />
+
+<f:section name="main">
+	<f:variable name="fontSize" value="10.5" />
+	<f:variable name="fontSizeSmall" value="8.5" />
+	<f:variable name="fontSizeLegend" value="9" />
+	<f:variable name="lineHeight" value="4" />
+    <f:variable name="lineHeightSmall" value="3.5" />
+    <f:variable name="paragraph" value="1" />
+    <f:variable name="padding" value="0.5" />
+   	<f:variable name="xStart" value="10" />
+    
+	<f:variable name="docTitle" value="Inhaltsverzeichnis {source.title->sv:utf8Encode()}" />
+
+	<f:if condition="{filter.author} && {filter.slide} && {filter.lastUsage}">
+    	<f:then>
+		    <f:variable name="columnWidth" value="{1:15, 2:57, 3:56, 4:13, 5:13, 6:13, 7:20}" />
+        </f:then>
+        <f:else if="{filter.author} && {filter.slide}">
+		    <f:variable name="columnWidth" value="{1:15, 2:70, 3:63, 4:13, 5:13, 6:13, 7:0}" />
+        </f:else>
+        <f:else if="{filter.author} && {filter.lastUsage}">
+		    <f:variable name="columnWidth" value="{1:15, 2:65, 3:61, 4:0, 5:13, 6:13, 7:20}" />
+        </f:else>
+        <f:else if="{filter.slide} && {filter.lastUsage}">
+		    <f:variable name="columnWidth" value="{1:15, 2:113, 3:0, 4:13, 5:13, 6:13, 7:20}" />
+        </f:else>
+        <f:else if="{filter.lastUsage}">
+		    <f:variable name="columnWidth" value="{1:15, 2:126, 3:0, 4:0, 5:13, 6:13, 7:20}" />
+        </f:else>
+        <f:else if="{filter.slide}">
+		    <f:variable name="columnWidth" value="{1:15, 2:133, 3:0, 4:13, 5:13, 6:13, 7:0}" />
+        </f:else>
+        <f:else if="{filter.author}">
+		    <f:variable name="columnWidth" value="{1:15, 2:77, 3:69, 4:0, 5:13, 6:13, 7:0}" />
+        </f:else>
+        <f:else>
+		    <f:variable name="columnWidth" value="{1:15, 2:146, 3:0, 4:0, 5:13, 6:13, 7:0}" />
+        </f:else>
+    </f:if>
+    <f:variable name="xPosition1" value="{xStart + columnWidth.1}" />
+    <f:variable name="xPosition2" value="{xPosition1 + columnWidth.2}" />
+    <f:variable name="xPosition3" value="{xPosition2 + columnWidth.3}" />
+    <f:variable name="xPosition4" value="{xPosition3 + columnWidth.4}" />							
+    <f:variable name="xPosition5" value="{xPosition4 + columnWidth.5}" />
+    <f:variable name="xPosition6" value="{xPosition5 + columnWidth.6}" />
+    <f:variable name="xPosition7" value="{xPosition6 + columnWidth.7}" />
+
+    <fpdf:setFillColor hex="CCCCCC" />
+    <fpdf:addPage orientation="P" />
+    <f:variable name="pageWidth" value="{fpdf:getPageWidth()}" />
+    
+    <f:comment> Header </f:comment>
+    <f:render partial="PDF/Header" arguments="{_all}" />
+
+    <f:comment> Dokumenttitel </f:comment>
+    <fpdf:setY y="33" />
+    <fpdf:setFont family="Calibri" size="16" style="B" />
+    <fpdf:cell width="200" text="{docTitle}" />
+    <fpdf:setXY x="{pageWidth - 96}" y="34" />
+    <fpdf:setFont family="Calibri" size="{fontSize}" style="" />
+    <fpdf:cell width="84" align="R" ln="1" text="Stand: {now->p:date(format:'%e. %B %Y')}" />
+    <fpdf:setY y="40" />
+
+    <f:comment> Spaltentitel </f:comment>
+    <f:render partial="PDF/TableHeader" arguments="{_all}" />
+
+    <fpdf:setFont family="Calibri" size="{fontSize}" style="N" />
+    <f:for each="{songs}" as="song">
+        <fpdf:setTextColor hex="000000" />
+		<sv:ifSongRejected song="{song}" source="{filter.source}" number="songNumber">
+            <fpdf:setTextColor hex="999999" />
+        </sv:ifSongRejected>
+        
+        <f:variable name="songNumber" value="" />
+        <f:variable name="slide" value="" />
+        <f:for each="{song.collection}" as="collection">
+            <f:if condition="{collection.source.uid}=={filter.source}">
+                <f:variable name="songNumber" value="{collection.number}" />
+                <f:if condition="{collection.slide}>0">
+                    <f:variable name="slide" value="{collection.slide}" />
+                </f:if>
+            </f:if>
+        </f:for>
+
+        <f:variable name="yStart" value="{fpdf:getY()}" />
+        <f:variable name="yPosition" value="{yStart + padding}" />
+        
+        <f:comment> Song number </f:comment>
+        <fpdf:setXY x="{xStart}" y="{yPosition}" />
+        <fpdf:cell width="{columnWidth.1}" height="{lineHeight}" text="{songNumber}" />                
+
+        <f:comment> Song title </f:comment>
+        <fpdf:setXY x="{xPosition1}" y="{yPosition}" />
+        <fpdf:multiCell width="{columnWidth.2}" height="{lineHeight}" text="{song.title}" />
+        <f:variable name="height2" value="{fpdf:getY()}" />
+
+        <f:comment> Song author </f:comment>
+        <f:if condition="{filter.author}">
+            <fpdf:setXY x="{xPosition2}" y="{yPosition}" />
+            <fpdf:multiCell width="{columnWidth.3}" height="{lineHeight}" text="{song.author}" />
+            <f:variable name="height3" value="{fpdf:getY()}" />
+        </f:if>
+
+        <f:comment> Slide number </f:comment>
+        <f:if condition="{filter.slide}">
+            <fpdf:setXY x="{xPosition3}" y="{yPosition}" />
+            <fpdf:cell width="{columnWidth.4}" height="{lineHeight}" text="{slide}" />
+        </f:if>
+
+        <f:comment> Tone </f:comment>
+        <fpdf:setXY x="{xPosition4}" y="{yPosition}" />
+        <fpdf:cell width="{columnWidth.5}" height="{lineHeight}" text="{song.tone}" />
+
+        <f:comment> Language </f:comment>
+        <fpdf:setXY x="{xPosition5}" y="{yPosition}" />
+        <f:switch expression="{song.language}">
+            <f:case value="1">
+                <fpdf:cell width="{columnWidth.6}" height="{lineHeight}" text="DE" />
+            </f:case>
+            <f:case value="2">
+                <fpdf:cell width="{columnWidth.6}" height="{lineHeight}" text="CH" />
+            </f:case>
+            <f:case value="3">
+                <fpdf:cell width="{columnWidth.6}" height="{lineHeight}" text="EN" />
+            </f:case>
+            <f:case value="9">
+                <fpdf:cell width="{columnWidth.6}" height="{lineHeight}" text="XX" />
+            </f:case>
+            <f:defaultCase>
+                <fpdf:cell width="{columnWidth.6}" height="{lineHeight}" text="?" />
+            </f:defaultCase>
+        </f:switch>
+
+        <f:comment> Last usage </f:comment>
+        <f:if condition="{filter.lastUsage}">
+            <fpdf:setXY x="{xPosition6}" y="{yPosition}" />
+            <fpdf:cell width="{columnWidth.7}" height="{lineHeight}" text="{song.lastUsage->f:format.date(format:'d.m.Y')}" />
+        </f:if>
+
+        <f:comment> Draw borders </f:comment>
+        <f:variable name="textHeight" value="{v:math.maximum(a:'{0:height2,1:height3}')}" />
+        <f:variable name="rowHeight" value="{textHeight - yStart + padding + padding}" />
+        <fpdf:rect x="{xStart}" y="{yStart}" width="{columnWidth.1}" height="{rowHeight}" />
+        <fpdf:rect x="{xPosition1}" y="{yStart}" width="{columnWidth.2}" height="{rowHeight}" />
+        <f:if condition="{filter.author}">
+            <fpdf:rect x="{xPosition2}" y="{yStart}" width="{columnWidth.3}" height="{rowHeight}" />
+        </f:if>
+        <f:if condition="{filter.slide}">
+            <fpdf:rect x="{xPosition3}" y="{yStart}" width="{columnWidth.4}" height="{rowHeight}" />
+        </f:if>
+        <fpdf:rect x="{xPosition4}" y="{yStart}" width="{columnWidth.5}" height="{rowHeight}" />
+        <fpdf:rect x="{xPosition5}" y="{yStart}" width="{columnWidth.6}" height="{rowHeight}" />
+        <f:if condition="{filter.lastUsage}">
+            <fpdf:rect x="{xPosition6}" y="{yStart}" width="{columnWidth.7}" height="{rowHeight}" />
+        </f:if>
+
+        <f:comment> Page break </f:comment>
+        <f:if condition="{yStart + rowHeight}>265">
+            <f:then>
+                
+                <f:comment> Footer </f:comment>
+                <f:render partial="PDF/Footer" arguments="{_all}" />
+
+                <f:comment> Header </f:comment>
+                <fpdf:addPage orientation="P" />
+                <f:render partial="PDF/Header" arguments="{_all}" />
+        
+                <f:comment> Spaltentitel </f:comment>
+                <fpdf:setY y="30" />
+                <f:render partial="PDF/TableHeader" arguments="{_all}" />
+
+            </f:then>
+            <f:else>
+                <fpdf:setXY x="{xStart}" y="{yStart + rowHeight}" />
+            </f:else>
+        </f:if>
+
+    </f:for>
+    
+    <fpdf:setFont family="Calibri" size="{fontSize}" style="N" />
+
+    <f:comment> Footer </f:comment>
+    <f:render partial="PDF/Footer" arguments="{_all}" />
+
+</f:section>
+

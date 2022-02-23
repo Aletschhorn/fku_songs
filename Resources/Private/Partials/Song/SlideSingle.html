@@ -1,0 +1,9 @@
+<f:if condition="{collections}">
+	<f:for each="{collections}" as="collection">
+		<f:if condition="{collection.source.uid}=={source}">
+			<f:if condition="{collection.slide}>0">
+				<f:if condition="{complete}">Folie&nbsp;</f:if>{collection.slide}
+			</f:if>
+		</f:if>
+	</f:for>
+</f:if>

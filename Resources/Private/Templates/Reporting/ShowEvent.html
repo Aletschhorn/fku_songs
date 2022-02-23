@@ -1,0 +1,48 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<div class="card my-3">
+    <div class="card-body">
+    	<h3 class="card-title">{event.descriptionFirstLine} | {event.eventStart->f:format.date(format:'d.m.y, G.i')} Uhr</h3>
+        <f:if condition="{event.descriptionRest}">
+            <p class="card-text"><f:format.nl2br>{event.descriptionRest}</f:format.nl2br></p>
+        </f:if>
+        <f:if condition="{master}">
+            <f:link.action action="show" extensionName="fkuplanning" pluginName="serviceplan" controller="Master" arguments="{master:master}" pageUid="{settings.planningPid}" class="card-link">
+                <svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg>
+                Gottesdienst-Details (GD-Plan)
+            </f:link.action>
+        </f:if>
+    </div>
+</div>
+
+<ul class="nav nav-pills my-4">
+    <li class="nav-item">
+    	<f:link.action action="list" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-115-list.svg#glyphicons-basic"/></svg> Anlass-Liste
+        </f:link.action>
+    </li>
+    <li class="nav-item">
+    	<f:link.action action="editEvent" arguments="{event:event}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-31-pencil.svg#glyphicons-basic"/></svg> Ändern
+        </f:link.action>
+    </li>
+    <li class="nav-item">
+    	<f:link.action action="new" arguments="{event:event}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-371-plus.svg#glyphicons-basic"/></svg> Weiteres Lied
+        </f:link.action>
+    </li>
+</ul>
+
+<f:flashMessages as="flashMessages">
+	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
+</f:flashMessages>
+
+<div class="d-none d-lg-block">
+	<f:render partial="Reporting/SongTable" arguments="{reporting:reporting}" />
+</div>
+<div class="d-block d-lg-none">
+	<f:render partial="Reporting/SongTableXS" arguments="{reporting:reporting}" />
+</div>
+</f:section>

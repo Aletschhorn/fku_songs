@@ -1,0 +1,71 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+<h2>Lied hinzufügen</h2>
+
+<f:flashMessages as="flashMessages">
+	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
+</f:flashMessages>
+
+<f:render partial="Song/SearchForm" arguments="{filter:filter,sources:sources,action:'new',event:event,cancelButton:1}" />
+<br />
+
+<f:if condition="{songs}">
+	<f:then>
+		<h3>Suchresultat: <f:if condition="{total}==1"><f:then>1 Lied</f:then><f:else>{total} Lieder</f:else></f:if></h3>
+		<f:if condition="{page.total}>1">
+			<f:render partial="Song/Pagination" arguments="{page:page,pagearray:pagearray,filter:filter,action:'new',event:event}" />
+		</f:if>
+
+		<f:form action="create">
+			<f:form.hidden name="event" value="{event.uid}" />
+			<f:for each="{filter}" as="value" key="key">
+				<f:form.hidden name="filter[{key}]" value="{value}" />
+			</f:for>
+			<table class="table">
+				<tr>
+					<th> </th>
+					<th>Titel</th>
+					<th> </th>
+					<th>Sprache</th>
+					<th>Sammlung</th>
+				</tr>
+			
+				<f:for each="{songs}" as="song">
+					<tr>
+						<td>
+						<button type="submit" name="tx_fkusongs_reporting[choice]" value="{song.uid}-new" class="btn btn-primary btn-sm" title="Auswählen und weitere hinzufügen">
+                        	<svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-371-plus.svg#glyphicons-basic"/></svg>
+                        </button>
+						<button type="submit" name="tx_fkusongs_reporting[choice]" value="{song.uid}-editEvent" class="btn btn-primary btn-sm" title="Auswählen und zurück">
+                        	<svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-739-check.svg#glyphicons-basic"/></svg>
+                        </button>
+						</td>
+						<td>{song.title}</td>
+						<td>
+							<f:if condition="{song.recommended}==1"><svg class="icon-md" width="32" height="32" fill="#D07601" alt="Kernlied"><use xlink:href="fileadmin/icon/glyphicons-basic-73-bookmark.svg#glyphicons-basic"/></svg></f:if>
+						</td>
+						<td>
+							<f:render partial="Song/Flags" arguments="{lang:song.language}" />
+						</td>
+						<td>
+							<f:render partial="Song/Collections" arguments="{collections:song.collection,separator:', ',complete:0}" />
+						</td>
+					</tr>
+				</f:for>
+			</table>
+		</f:form>
+
+		<f:if condition="{page.total}>1">
+			<f:render partial="Song/Pagination" arguments="{page:page,pagearray:pagearray,filter:filter,action:'new',event:event}" />
+		</f:if>
+
+	</f:then>
+	<f:else>
+		<br />
+        <f:variable name="message" value="{severity:'-1',title:'',message:'Keine Lieder gefunden'}" />
+		<f:render partial="Alert" arguments="{flashMessages:'{0:message}'}" />
+	</f:else>
+</f:if>
+
+</f:section>

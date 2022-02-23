@@ -1,0 +1,36 @@
+
+plugin.tx_fkusongs {
+	view {
+		# cat=plugin.tx_fkusongs/file; type=string; label=Path to template root (FE)
+		templateRootPath = EXT:fku_songs/Resources/Private/Templates/
+		# cat=plugin.tx_fkusongs/file; type=string; label=Path to template partials (FE)
+		partialRootPath = EXT:fku_songs/Resources/Private/Partials/
+		# cat=plugin.tx_fkusongs/file; type=string; label=Path to template layouts (FE)
+		layoutRootPath = EXT:fku_songs/Resources/Private/Layouts/
+	}
+	persistence {
+		# cat=plugin.tx_fkusongs//a; type=string; label=Default storage PID
+		storagePid =
+	}
+	settings {
+		# cat=plugin.tx_fkusongs/others/a; type=int+; label=Results per page
+		resultsPerPage = 25
+		# cat=plugin.tx_fkusongs/others/c; type=int+; label=PID of song overview
+		songPid =
+		# cat=plugin.tx_fkusongs/others/d; type=int+; label=PID of song reporting
+		reportingPid =
+		# cat=plugin.tx_fkusongs/others/e; type=int+; label=PID of song charts
+		chartsPid =
+		# cat=plugin.tx_fkusongs/others/f; type=int+; label=PID of song statistics
+		statisticsPid =
+		# cat=plugin.tx_fkusongs/others/g; type=int+; label=PID of planning show page
+		planningPid =
+		# cat=plugin.tx_fkusongs/others/k; type=string; label=PID of pages which cache to delete after any edit (comma-separated)
+		deleteCachePid = 
+		# cat=plugin.tx_fkusongs/others/n; type=string; label=List of "last x months" in charts view (comma-separated)
+		chartsTimeSelection = 3,6,12
+		# cat=plugin.tx_fkusongs/others/o; type=int+; label=Page type number for PDF export file
+		pdfPageType = 180
+	
+	}
+}

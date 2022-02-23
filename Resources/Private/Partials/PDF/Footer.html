@@ -1,0 +1,10 @@
+{namespace fpdf=CodingMs\FluidFpdf\ViewHelpers}
+{namespace v=FluidTYPO3\Vhs\ViewHelpers}
+
+<f:alias map="{footerTextY:'{v:math.subtract(a:\'{fpdf:getPageHeight()}\',b:13)}',footerLineY:'{v:math.subtract(a:\'{fpdf:getPageHeight()}\',b:16)}'}">
+	<fpdf:line x1="10" y1="{footerLineY}" x2="{v:math.subtract(a:'{fpdf:getPageWidth()}',b:12)}" y2="{footerLineY}" />
+	<fpdf:setXY x="10" y="{footerTextY}" />
+	<fpdf:cell width="100" text="www.fku.ch > Arbeitszweige > Musik" />
+	<fpdf:setXY x="{v:math.subtract(a:'{fpdf:getPageWidth()}',b:96)}" y="{footerTextY}" />
+	<fpdf:cell width="90" align="R" ln="1" text="Seite {fpdf:pageNo()} von |nb|" />
+</f:alias>

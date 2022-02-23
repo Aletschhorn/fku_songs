@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-08-10T13:26:20Z" product-name="fku_songs">
+		<header/>
+		<body>
+			<trans-unit id="title.description">
+				<source>title</source>
+			</trans-unit>
+			<trans-unit id="language.description">
+				<source>language</source>
+			</trans-unit>
+			<trans-unit id="author.description">
+				<source>author</source>
+			</trans-unit>
+			<trans-unit id="year.description">
+				<source>year</source>
+			</trans-unit>
+			<trans-unit id="bpm.description">
+				<source>bpm</source>
+			</trans-unit>
+			<trans-unit id="tone.description">
+				<source>tone</source>
+			</trans-unit>
+			<trans-unit id="keywords.description">
+				<source>keywords</source>
+			</trans-unit>
+			<trans-unit id="ccli_id.description">
+				<source>ccliId</source>
+			</trans-unit>
+			<trans-unit id="ccli_offering.description">
+				<source>ccliOffering</source>
+			</trans-unit>
+			<trans-unit id="copyright.description">
+				<source>copyright</source>
+			</trans-unit>
+			<trans-unit id="links.description">
+				<source>links</source>
+			</trans-unit>
+			<trans-unit id="youtube.description">
+				<source>youtube</source>
+			</trans-unit>
+			<trans-unit id="comment.description">
+				<source>comment</source>
+			</trans-unit>
+			<trans-unit id="relation.description">
+				<source>relation</source>
+			</trans-unit>
+			<trans-unit id="relation_from.description">
+				<source>relationFrom</source>
+			</trans-unit>
+			<trans-unit id="collection.description">
+				<source>collection</source>
+			</trans-unit>
+			<trans-unit id="recommended.description">
+				<source>recommended</source>
+			</trans-unit>
+			<trans-unit id="last_usage.description">
+				<source>lastUsage</source>
+			</trans-unit>
+			<trans-unit id="songtext.description">
+				<source>songtext</source>
+			</trans-unit>
+			<trans-unit id="popularity.description">
+				<source>popularity</source>
+			</trans-unit>
+			<trans-unit id="usages.description">
+				<source>usages</source>
+			</trans-unit>
+			<trans-unit id="statistic_update.description">
+				<source>statisticUpdate</source>
+			</trans-unit>
+			<trans-unit id="slug.description">
+				<source>SLUG</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

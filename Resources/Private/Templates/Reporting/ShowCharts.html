@@ -1,0 +1,95 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+
+<ul class="nav nav-pills mb-3">
+    <li class="nav-item">
+    	<f:link.page pageUid="{settings.songPid}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-28-search.svg#glyphicons-basic"/></svg>&nbsp;Suchformular für Lieder
+        </f:link.page>
+    </li>
+    <li class="nav-item">
+    	<f:link.page pageUid="{settings.reportingPid}" class="nav-link">
+        	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-306-square-empty-play.svg#glyphicons-basic"/></svg>&nbsp;Lieder pro Gottesdienst
+        </f:link.page>
+    </li>
+	<f:security.ifHasRole role="Musik-Admin">    
+	    <li class="nav-item">
+	    	<f:link.page pageUid="{settings.statisticsPid}" class="nav-link">
+            	<svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-670-dashboard.svg#glyphicons-basic"/></svg>&nbsp;Statistiken
+            </f:link.page>
+        </li>
+	</f:security.ifHasRole>
+</ul>
+
+<h3>Auswertungskriterien</h3>
+<div class="row">
+	<div class="col-xl-4">
+        <nav>
+            <f:alias map="{selection:{24:'Gottesdienst',21:'Highwäg',0:'Beide'}}">
+                <ul class="pagination mt-3">
+                    <f:for each="{selection}" as="sel" key="val">
+                        <f:if condition="{filter}=={val}">
+                            <f:then>
+                                <li class="page-item active"><a class="page-link" href="#">{sel}<span class="sr-only">(ausgewählt)</span></a></li>
+                            </f:then>
+                            <f:else>
+                                <li class="page-item"><f:link.action action="showCharts" arguments="{period:period,filter:val}" class="page-link">{sel}</f:link.action></li>
+                            </f:else>
+                        </f:if>
+                    </f:for>
+                </ul>
+            </f:alias>
+		</nav>
+    </div>
+	<div class="col-xl-8">
+    	<nav>
+            <ul class="pagination mt-3">
+                <f:for each="{timeSelection}" as="sel">
+                    <f:if condition="{period}=={sel}">
+                        <f:then>
+                            <li class="page-item active"><a class="page-link" href="#">Letzte {sel} Monate<span class="sr-only">(ausgewählt)</span></a></li>
+                        </f:then>
+                        <f:else>
+                            <li class="page-item"><f:link.action action="showCharts" arguments="{period:sel,filter:filter}" class="page-link">Letzte {sel} Monate</f:link.action></li>
+                        </f:else>
+                    </f:if>
+                </f:for>
+            </ul>
+        </nav>
+    </div>
+</div>
+<br />
+
+<f:if condition="{charts}">
+	<f:then>
+		<table class="table">
+			<f:for each="{charts}" as="songs" key="counter">
+				<f:for each="{songs}" as="song" iteration="it">
+					<tr>
+						<f:if condition="{it.isFirst}">
+							<td rowspan="{songs->f:count()}"><span class="lead">{counter}x</span></td>
+						</f:if>
+						<td><f:link.action action="show" pluginName="List" controller="Song" arguments="{song:song}" pageUid="{settings.songPid}">{song.title}</f:link.action></td>
+						<td>
+							<f:if condition="{song.recommended}==1">
+                            	<svg class="icon-md" width="32" height="32" fill="#D07601" title="Kernlied" alt="Kernlied"><use xlink:href="fileadmin/icon/glyphicons-basic-73-bookmark.svg#glyphicons-basic"/></svg>
+                            </f:if>
+						</td>
+						<td>
+							<f:render partial="Song/Flags" arguments="{lang:song.language}" />
+						</td>
+						<td>
+							<f:render partial="Song/Collections" arguments="{collections:song.collection,separator:', ',complete:0}" />
+						</td>
+					</tr>
+				</f:for>
+			</f:for>
+		</table>
+	</f:then>
+	<f:else>
+		<p>Es gibt keine Lieder in den letzten drei Monaten, die mehr als einmal verwendet wurden.</p>
+	</f:else>
+</f:if>
+
+</f:section>

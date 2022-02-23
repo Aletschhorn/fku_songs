@@ -1,0 +1,43 @@
+<f:layout name="Default" />
+<f:section name="main">
+
+<f:spaceless>
+<h2>Details zu &quot;{song.title}&quot;</h2>
+
+<f:flashMessages as="flashMessages">
+	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
+</f:flashMessages>
+
+<f:render partial="Song/Properties" arguments="{_all}" />
+
+<br />
+<f:render partial="BackButton" arguments="{back:back}" />&nbsp;
+<f:link.action action="list" arguments="{reset:1}" class="btn btn-outline-dark">Neue Liedersuche</f:link.action>&nbsp;
+<f:security.ifHasRole role="Musik-Admin">
+	<f:link.action action="edit" arguments="{song:song}" class="btn btn-outline-dark">Lied ändern</f:link.action>
+</f:security.ifHasRole>
+
+<f:if condition="{song.songtext}">
+	<br /><br />
+    <div class="d-block" id="songtextClosed">
+		<a style="cursor:pointer" onclick="document.getElementById('songtextOpened').className='d-block';document.getElementById('songtextClosed').className='d-none'">
+        	<h3>Liedtext <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg></h3>
+        </a>
+	</div>
+    <div class="d-none" id="songtextOpened">
+    	<a style="cursor:pointer" onclick="document.getElementById('songtextOpened').className='d-none';document.getElementById('songtextClosed').className='d-block'">
+			<h3>Liedtext <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg></h3>
+        </a>
+        <p>{song.songtextFormatted->f:format.raw()}</p>
+	</div>
+</f:if>
+
+<f:if condition="{song.youtube}">
+    <br /><br /><br />
+	<div class="embed-responsive embed-responsive-16by9">
+		<iframe class="embed-responsive-item" src="https://www.youtube.com/embed/{song.youtube}" allowfullscreen></iframe>
+	</div>
+</f:if>
+
+</f:spaceless>
+</f:section>

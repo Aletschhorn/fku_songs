@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-08-10T13:26:20Z" product-name="fku_songs">
+		<header/>
+		<body>
+			<trans-unit id="tx_fkusongs_domain_model_song">
+				<source>Song</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.language">
+				<source>Language</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.author">
+				<source>Author</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.year">
+				<source>Year</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.bpm">
+				<source>BPM</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.tone">
+				<source>Tone</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.keywords">
+				<source>Keywords</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.ccli_id">
+				<source>CCLI ID</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.ccli_offering">
+				<source>CCLI Offering</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.copyright">
+				<source>Copyright</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.links">
+				<source>Links</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.youtube">
+				<source>Youtube ID</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.comment">
+				<source>Comment</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.relation">
+				<source>Related songs</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.relation_from">
+				<source>Relation songs (from)</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.collection">
+				<source>Collection</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.recommended">
+				<source>Recommended</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.last_usage">
+				<source>Last usage</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.songtext">
+				<source>Song text</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.popularity">
+				<source>Popularity index</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.usages">
+				<source>Usages last 24 months</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.statistic_update">
+				<source>Last update of statistics</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_song.slug">
+				<source>Speaking URL path segment</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_collection">
+				<source>Collection</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_collection.number">
+				<source>Number</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_collection.source">
+				<source>Source</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_collection.rejected">
+				<source>Rejected</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_collection.slide">
+				<source>Slide number</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_reporting">
+				<source>Reporting</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_reporting.status">
+				<source>Status</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_reporting.event">
+				<source>Event</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_reporting.song">
+				<source>Song</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_source">
+				<source>Source</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_source.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_source.acronym">
+				<source>Acronym</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_source.withrecommended">
+				<source>With recommended songs</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_keyword">
+				<source>Keyword</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_keyword.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_keyword.songs">
+				<source>Number of songs</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_link">
+				<source>Linked documents</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_link.url">
+				<source>URL</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_link.title">
+				<source>Title</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_link.type">
+				<source>Type</source>
+			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_link.song">
+				<source>Song</source>
+			</trans-unit>
+			<trans-unit id="palette.general">
+				<source>General</source>
+			</trans-unit>
+			<trans-unit id="palette.ccli">
+				<source>SongSelect</source>
+			</trans-unit>
+			<trans-unit id="palette.statistics">
+				<source>Statistical figures</source>
+			</trans-unit>
+			<trans-unit id="tab.relations">
+				<source>Relations</source>
+			</trans-unit>
+			<trans-unit id="tab.songreporting">
+				<source>Song reporting</source>
+			</trans-unit>
+			<trans-unit id="tx_fkuagenda_domain_model_event.songreporting">
+				<source>Showed song texts</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

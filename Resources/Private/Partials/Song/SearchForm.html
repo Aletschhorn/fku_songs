@@ -1,0 +1,102 @@
+{namespace sv=FKU\FkuSongs\ViewHelpers}
+
+<f:form name="search" action="{action}">
+	<f:form.hidden name="event" value="{event}" />
+	<f:form.hidden name="page" value="1" />
+	<div class="row">
+		<div class="col-sm-12 col-12">
+            <div class="row form-group">
+                <label for="searchword" class="col-sm-2 col-form-label">
+                    Suchbegriff
+                    <span data-toggle="tooltip" data-placement="bottom" title="Der eingegebene Begriff wird beim Liedtitel und Verfasser, bei den Stichwörtern und den Liednummern der Sammlungen gesucht. Für letzteres nur die Zahl alleine eingeben. Um zusätzlich Liedtexte zu durchsuchen, entsprechenden Parameter aktivieren.">
+                    	<svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-635-circle-question.svg#glyphicons-basic"/></svg>
+                    </span>
+                </label>
+                <div class="col-sm-9">
+                    <f:form.textfield name="filter[searchword]" value="{filter.searchword}" class="form-control" autofocus="autofocus" />
+                </div>
+            </div>
+		</div>
+        
+		<div class="col-sm-12 col-12">
+            <div class="row form-group mb-1">
+            	<label class="col-sm-2 col-form-label">Suchmodus</label>
+                <div class="col-sm-9">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+   	                    <f:for each="{predefOptions}" as="option" key="key">
+                            <label class="btn btn-outline-dark {f:if(condition:'{key}=={filter.predefined}',then:'active')}" onclick="changeSearchOptions({key})">
+                                <f:form.radio name="filter[predefined]" value="{key}" checked="{key}=={filter.predefined}" />{option}
+                            </label>
+                        </f:for>
+                    </div>
+                    <div class="btn-group" role="group" data-toggle="buttons">
+                    	<button type="button" class="btn btn-link" onclick="toggleSearchOptions()" id="searchOptionButton">
+                            <svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg> Suchoptionen
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+        
+    <div id="searchParameters1" class="d-none">
+        <f:render partial="Song/SearchFormParameters" arguments="{filter:filterGottesdienst,sources:sources,inputFieldName:'fgd',disabled:1}" />
+    </div>
+    <div id="searchParameters2" class="d-none">
+        <f:render partial="Song/SearchFormParameters" arguments="{filter:filterHighwaeg,sources:sources,inputFieldName:'fhw',disabled:1}" />
+    </div>
+    <div id="searchParameters9" class="d-none">
+        <f:render partial="Song/SearchFormParameters" arguments="{filter:filter,sources:sources,inputFieldName:'filter',disabled:0}" />
+    </div>
+
+    <br />
+    <div class="row form-group">
+        <div class="col-sm-10 col-sm-offset-2">
+            <f:form.submit value="Suchen" class="btn btn-primary" />&nbsp;
+            <f:if condition="{cancelButton}">
+                <f:then>
+                    <f:link.action action="editEvent" arguments="{event:event}" class="btn btn-outline-dark">Abbrechen</f:link.action>&nbsp;
+                </f:then>
+                <f:else>
+                    <f:link.action action="list" arguments="{reset:1}" class="btn btn-outline-dark">Zurücksetzen</f:link.action>&nbsp;
+                </f:else>
+            </f:if>
+        </div>
+	</div>
+</f:form>
+
+<script language="javascript">
+var searchOptionsDisplayed = {f:if(condition:'{filter.predefined}==9',then:'0',else:'1')};
+toggleSearchOptions();
+
+function toggleSearchOptions () {
+	if (searchOptionsDisplayed == 0) {
+		var mode = document.getElementsByName('tx_fkusongs_list[filter][predefined]');
+		for (i=0;i<mode.length;i++) {
+			if (mode[i].checked) {
+				parameterSet = mode[i].value;
+			}
+		}
+		document.getElementById('searchParameters'+parameterSet).className = 'd-block';
+		document.getElementById('searchOptionButton').innerHTML = '<svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-221-chevron-down.svg#glyphicons-basic"/></svg> Suchoptionen';
+		searchOptionsDisplayed = 1;
+	} else {
+		document.getElementById('searchParameters1').className = 'd-none';
+		document.getElementById('searchParameters2').className = 'd-none';
+		document.getElementById('searchParameters9').className = 'd-none';
+		document.getElementById('searchOptionButton').innerHTML = '<svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg> Suchoptionen';
+		searchOptionsDisplayed = 0;
+	}
+	
+}
+
+function changeSearchOptions (parameterSet) {
+	if (searchOptionsDisplayed == 1) {
+		console.log(parameterSet);
+		document.getElementById('searchParameters1').className = 'd-none';
+		document.getElementById('searchParameters2').className = 'd-none';
+		document.getElementById('searchParameters9').className = 'd-none';
+		document.getElementById('searchParameters'+parameterSet).className = 'd-block';
+	}
+}
+</script>

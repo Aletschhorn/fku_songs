@@ -1,0 +1,164 @@
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers}
+<f:spaceless>
+<div class="row">
+	<div class="col-sm-4">
+
+		<dl>
+			<dt>Sammlungen</dt>
+			<dd>
+				<f:render partial="Song/Collections" arguments="{collections:song.collection,separator:'<br />',complete:1}" />
+			</dd>
+			<br />
+			
+            <dt>Beliebtheit in Gottesdiensten</dt>
+            <dd>
+                <f:render partial="Song/Popularity" arguments="{popularity:song.popularity}" />
+                <f:security.ifHasRole role="Developper"> ({song.popularity->f:format.number(decimals:'2')})</f:security.ifHasRole>
+            </dd>
+            <br />
+			
+			<dt>Komponist, Autor</dt>
+			<dd>
+				<f:if condition="{song.author}"><f:then>{song.author}</f:then><f:else>?</f:else></f:if>
+			</dd>
+			<br />
+			
+			<dt>Sprache / Jahr</dt>
+			<dd>
+				<f:render partial="Song/Flags" arguments="{lang:song.language}" />
+				/ <f:if condition="{song.year}>0"><f:then>{song.year}</f:then><f:else>?</f:else></f:if>
+			</dd>
+			<br />
+			
+			<dt>Tonart / Tempo</dt>
+			<dd>
+				<f:if condition="{song.tone}"><f:then>{song.tone}</f:then><f:else>?</f:else></f:if> / 
+				<f:if condition="{song.bpm}>0"><f:then>{song.bpm}</f:then><f:else>?</f:else></f:if>
+			</dd>
+			<br />
+			
+			<dt>Stichwörter</dt>
+			<dd>
+				<f:if condition="{song.keywords}">
+					<f:then>
+						<f:for each="{song.keywords->vhs:iterator.sort(sortBy:'title')}" as="keyword" iteration="it" key="title">
+							{keyword.title}<f:if condition="{it.isLast}==0">, </f:if>
+						</f:for>
+					</f:then>
+					<f:else>
+						(keine)
+					</f:else>
+				</f:if>
+			</dd>
+		</dl>
+	</div>
+	<div class="col-sm-8">
+    	<f:if condition="{lastUsages}">
+        	<f:then>
+            	<f:for each="{lastUsages}" as="lastUsage" key="months">
+                	<dl id="history{months}" {f:if(condition:'{months}!={period}',then:'class="d-none"')}>
+                    	<dt>Verwendung letzte {months} Monate</dt>
+                        <dd>
+                        	<f:for each="{lastUsage}" as="usage">
+                                <f:link.action action="showEvent" controller="Reporting" arguments="{event:usage.event,back:{action:'songShow',id:song}}" pageUid="{settings.reportingPid}">
+                                    {usage.event.category.title} {usage.event.eventStart->f:format.date(format:'d.m.y')}
+                                </f:link.action>
+                                <br />
+                            </f:for>
+                            <f:render partial="Song/HistoryLinks" arguments="{periods:periodsAll,period:months}" />
+                        </dd>
+                    </dl>
+                </f:for>
+            </f:then>
+            <f:else>
+            	<dl>
+                	<dt>Verwendung letzte {period} Monate</dt>
+                    <dd>
+                    	Niemals
+						<f:if condition="{song.lastUsage}">
+							<br />Letzte Verwendung war am {song.lastUsage->f:format.date(format:'d.m.Y')}
+						</f:if>
+                    </dd>
+                </dl>
+            </f:else>
+        </f:if>
+        
+        <dl>
+			<dt>Zugehörige Dokumente</dt>
+			<dd>
+				<f:if condition="{song.links}">
+					<f:then>
+						<f:for each="{song.links->vhs:iterator.sort(sortBy:'type')}" as="link">
+							<f:link.external uri="{link.url}" target="_blank">
+                                <svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-37-file.svg#glyphicons-basic"/></svg> {link.title}
+							</f:link.external>
+							<br />
+						</f:for>
+					</f:then>
+					<f:else>
+						(keine)
+					</f:else>
+				</f:if>
+			</dd>
+			<br />
+			
+			<f:if condition="{song.allRelated}">
+				<dt>Zugehörige Lieder</dt>
+				<dd>
+					<f:for each="{song.allRelated}" as="related">
+						<f:link.action action="show" arguments="{song:related}">{related.title}</f:link.action><br />
+					</f:for>
+				</dd>
+				<br />
+			</f:if>
+
+			<dt>Copyright</dt>
+			<dd>
+            	<f:switch expression="{song.copyright}">
+                	<f:case value="1">Lied ist gemeinfrei (Public Domain)<br /></f:case>
+                    <f:case value="2">Lied gehört einem FKU-Mitglied<br /></f:case>
+                    <f:case value="3">Freie Benutzung durch Autor bewilligt<br /></f:case>
+                </f:switch>
+				<f:switch expression="{song.ccliOffering}">
+					<f:case value="1">Lied existiert nicht auf SongSelect (CCLI)<br /></f:case>
+					<f:case value="2">Liedtext auf SongSelect (CCLI) vorhanden<f:if condition="{song.ccliId}>0">: <f:link.external uri="https://songselect.ccli.com/Songs/{song.ccliId}" target="ccli">{song.ccliId}</f:link.external></f:if><br /></f:case>
+					<f:case value="3">Liedtext und Akkorde auf SongSelect (CCLI) vorhanden<f:if condition="{song.ccliId}>0">: <f:link.external uri="https://songselect.ccli.com/Songs/{song.ccliId}" target="ccli">{song.ccliId}</f:link.external></f:if><br /></f:case>
+					<f:case value="4">Liedtext, Akkorde und Noten auf SongSelect (CCLI) vorhanden<f:if condition="{song.ccliId}>0">: <f:link.external uri="https://songselect.ccli.com/Songs/{song.ccliId}" target="ccli">{song.ccliId}</f:link.external></f:if><br /></f:case>
+					<f:defaultCase>Unbekannt, ob Lied auf SongSelect (CCLI) existiert<br /></f:defaultCase>
+				</f:switch>
+                <f:render partial="Song/TextCopyright" arguments="{songtextCopyright:song.songtextCopyright,short:0}" />
+			</dd>
+			<br />
+			
+			<f:if condition="{song.recommended} || {song.comment}">
+				<dt>Kommentare</dt>
+				<dd>
+					<f:if condition="{song.recommended}">
+						 <svg class="icon-md" width="32" height="32" fill="#D07601" alt="Kernlied"><use xlink:href="fileadmin/icon/glyphicons-basic-73-bookmark.svg#glyphicons-basic"/></svg> Dies ist ein Kernlied <span data-toggle="tooltip" data-placement="bottom" title="Die Kernlieder stellen ein Grund-Repertoire von (alt-)bekannten Liedern aus RG und SMU dar, welche der Gemeinde bekannt sind."><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-635-circle-question.svg#glyphicons-basic"/></svg></span><br />
+					</f:if>
+					{song.comment}
+				</dd>
+			</f:if>
+		</dl>
+	</div>
+</div>
+
+<script language="javascript">
+<f:for each="{periodsAll}" as="p">
+	$('.songhistoryShow{p}').click(function() {
+		<f:for each="{periodsAll}" as="p2">
+			<f:if condition="{p}=={p2}">
+				<f:then>
+					document.getElementById('history{p2}').className = 'd-block';
+				</f:then>
+				<f:else>
+					document.getElementById('history{p2}').className = 'd-none';
+				</f:else>
+			</f:if>
+		</f:for>
+		return false;
+	});
+</f:for>
+</script>
+
+</f:spaceless>

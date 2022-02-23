@@ -1,0 +1,25 @@
+{namespace vhs=FluidTYPO3\Vhs\ViewHelpers}
+<hr />
+<f:for each="{reporting}" as="songreport">
+    <div class="row">
+        <div class="col-8">
+        	<f:link.action action="show" controller="Song" arguments="{song:songreport.song}" pageUid="{settings.songPid}"><b>{songreport.song.title}</b></f:link.action>
+            <span class="float-right"><f:render partial="Song/Flags" arguments="{lang:songreport.song.language}" /></span>
+            <br />
+            <f:render partial="Song/Collections" arguments="{collections:songreport.song.collection,separator:', ',complete:0}" />
+            <br />
+            <f:render partial="Reporting/ColorCodeLong" arguments="{status:songreport.status}" />
+        </div>
+        <div class="col-4">
+            <f:for each="{songreport.song.links->vhs:iterator.sort(sortBy:'type')}" as="link">
+                <f:if condition="{link.type}<3">
+                    <f:link.external uri="{link.url}" target="_blank">
+                        <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-37-file.svg#glyphicons-basic"/></svg> {link.title}
+                    </f:link.external>
+                    <br />
+                </f:if>
+            </f:for>
+        </div>
+    </div>
+    <hr />
+</f:for>

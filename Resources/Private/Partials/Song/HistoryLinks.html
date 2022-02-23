@@ -1,0 +1,11 @@
+<f:if condition="{periods->f:count()}>1">
+    <svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-224-chevron-right.svg#glyphicons-basic"/></svg> Letzte 
+    <f:for each="{periods}" as="months" iteration="it">
+        <f:if condition="{period}!={months}">
+            <f:if condition="{notFirst}">/</f:if>
+            <a href="#" class="songhistoryShow{months}">{months} Monate</a>
+            <f:variable name="notFirst" value="1" />
+        </f:if>
+    </f:for>
+</f:if>
+	

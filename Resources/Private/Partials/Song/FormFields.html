@@ -1,0 +1,227 @@
+<html xmlns:f="http://typo3.org/ns/TYPO3/CMS/Fluid/ViewHelpers" xmlns:s="http://typo3.org/ns/FKU/FkuSongs/ViewHelpers" data-namespace-typo3-fluid="true">
+
+<div class="row">
+	<div class="col-md-6">
+		<h4>Informationen über das Lied</h4>
+	
+		<div class="form-group row">
+			<label for="title" class="col-4 col-form-label">Titel</label>
+			<div class="col-8">
+				<f:form.textfield property="title" class="form-control" errorClass="has-error" autofocus="true" />
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="language" class="col-4 col-form-label">Sprache</label>
+			<div class="col-8">
+				<f:form.select property="language" options="{1:'Deutsch',2:'Schweizerdeutsch',3:'Englisch',9:'Andere'}" class="form-control" />
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="author" class="col-4 col-form-label">Autor</label>
+			<div class="col-8">
+				<f:form.textfield property="author" class="form-control" />
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="year" class="col-4 col-form-label">Jahr</label>
+			<div class="col-8">
+				<f:form.textfield property="year" class="form-control" />
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="bpm" class="col-4 col-form-label">Tempo (BPM)</label>
+			<div class="col-3">
+				<f:form.textfield property="bpm" class="form-control" />
+			</div>
+			<label for="tone" class="col-2 col-form-label">Tonart</label>
+			<div class="col-3">
+				<f:form.textfield property="tone" class="form-control" />
+			</div>
+		</div>
+		
+		<br />
+	</div>
+	<div class="col-md-6">
+
+		<h4>Copyright-Informationen</h4>
+		
+		<div class="form-group row">
+			<label for="ccliOffering" class="col-4 col-form-label">CCLI-Angebot</label>
+			<div class="col-8">
+				<f:form.select property="ccliOffering" options="{0:'Unbekannt',1:'Nicht vorhanden',2:'Nur Text',3:'Akkorde',4:'Noten'}" class="form-control" />
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="ccliId" class="col-4 col-form-label">CCLI-ID</label>
+			<div class="col-8">
+				<f:form.textfield property="ccliId" class="form-control" />
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<label for="copyright" class="col-4 col-form-label">Copyright</label>
+			<div class="col-8">
+				<f:form.select property="copyright" options="{0:'Normal',1:'Public Domain',2:'FKU-eigen',3:'Freie Verwendung'}" class="form-control" />
+			</div>
+		</div>
+
+		<br />
+	</div>
+</div>
+
+<br />
+
+<div class="row">
+	<div class="col-md-6">
+
+		<h4>Zugehörigkeit zu Sammlungen</h4>
+		<f:for each="{song.collection}" as="coll" iteration="it">
+			<div class="form-group row">
+				<label for="song.collection.source" class="col-4 col-form-label">Sammlung</label>
+				<div class="col-8">
+					<f:form.select name="collection[{it.index}][source]" value="{coll.source.uid}" options="{sourceArray}" class="form-control" />
+                    <div class="form-inline">
+                        <f:form.textfield name="collection[{it.index}][number]" value="{coll.number}" size="3" class="form-control" placeholder="Nr." />&nbsp;
+                        <f:form.textfield name="collection[{it.index}][slide]" value="{coll.slide}" size="3" class="form-control" placeholder="Folie" />&nbsp;
+                        <div class="btn-group-toggle" data-toggle="buttons">
+                            <f:if condition="{coll.rejected}">
+                                <f:then>
+                                    <label class="btn btn-outline-secondary active" aria-pressed="true" title="nicht mehr im aktuellen Repertoire">
+                                        <input type="checkbox" name="tx_fkusongs_songs[collection][{it.index}][rejected]" value="1" checked="checked" />
+                                        <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-305-no-symbol.svg#glyphicons-basic"/></svg>
+                                    </label>
+                                </f:then>
+                                <f:else>
+                                    <label class="btn btn-outline-secondary" aria-pressed="false" title="nicht mehr im aktuellen Repertoire">
+                                        <input type="checkbox" name="tx_fkusongs_songs[collection][{it.index}][rejected]" value="1" />
+                                        <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-305-no-symbol.svg#glyphicons-basic"/></svg>
+                                    </label>
+                                </f:else>
+                            </f:if>
+                        </div>
+                    </div>
+				</div>				
+			</div>
+		</f:for>
+		<div class="form-group row">
+			<label for="song.collection.source" class="col-4 col-form-label">Sammlung</label>
+			<div class="col-8">
+				<f:form.select name="collection[{song.collection->f:count()}][source]" options="{sourceArray}" class="form-control" />
+                <div class="form-inline">
+                    <f:form.textfield name="collection[{song.collection->f:count()}][number]" size="3" class="form-control" placeholder="Nr." />&nbsp;
+                    <f:form.textfield name="collection[{song.collection->f:count()}][slide]" size="3" class="form-control" placeholder="Folie" />&nbsp;
+                    <div class="btn-group-toggle" data-toggle="buttons">
+                        <label class="btn btn-outline-dark" aria-pressed="false" title="nicht mehr im aktuellen Repertoire">
+                            <input type="checkbox" name="tx_fkusongs_songs[collection][{song.collection->f:count()}][rejected]" value="1" />
+                            <svg class="icon-md" width="32" height="32" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-305-no-symbol.svg#glyphicons-basic"/></svg>
+                        </label>
+                    </div>
+                </div>
+			</div>
+		</div>
+
+		<div class="form-group row">
+			<div class="col-4">Kernlied</div>
+			<div class="col-8">
+            	<div class="form-check">
+					<f:form.checkbox property="recommended" value="1" id="recommended" class="form-check-input" />
+  					<label class="form-check-label" for="recommended">Gehört zu Kernliedern</label>
+				</div>
+			</div>
+		</div>
+
+		<br />
+    </div>
+	<div class="col-md-6">
+
+		<h4>Ergänzende Informationen</h4>
+
+		<div class="form-group row">
+			<label for="youtube" class="col-4 col-form-label">YouTube-ID</label>
+			<div class="col-8">
+				<f:form.textfield property="youtube" class="form-control" />
+			</div>
+		</div>
+		
+		<div class="form-group row">
+			<label for="comment" class="col-4 col-form-label">Kommentar</label>
+			<div class="col-8">
+				<f:form.textarea property="comment" rows="4" class="form-control" />
+			</div>
+		</div>
+        <br />
+	</div>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-md-6">
+    
+    	<h4>Liedtext</h4>
+		<label for="songtext" class="sr-only">Liedtext</label>
+		<f:form.textarea property="songtext" rows="25" class="form-control" />
+    </div>
+    
+    <div class="col-md-6">
+		<h4>Stichwörter für Liedersuche</h4>
+
+		<div class="btn-group-toggle" data-toggle="buttons">
+			<f:for each="{keywords}" as="keyword" iteration="it">
+				<f:if condition="{it.isFirst}">
+					<div style="display:none"><f:form.checkbox property="keywords" multiple="true" value="0" checked="0" /></div>
+				</f:if>
+				<s:ifInArray needle="{keyword.uid}" haystack="{song.keywordArray}">
+					<f:then>
+						<label class="btn btn-outline-dark btn-sm active" aria-pressed="true">
+							<f:form.checkbox property="keywords" multiple="true" value="{keyword.uid}" checked="1" />{keyword.title}
+						</label>
+					</f:then>
+					<f:else>
+						<label class="btn btn-outline-dark btn-sm" aria-pressed="false">
+							<f:form.checkbox property="keywords" multiple="true"  value="{keyword.uid}" checked="0" />{keyword.title}
+						</label>
+					</f:else>
+				</s:ifInArray>
+			</f:for>
+		</div>
+
+		<br /><br />
+	</div>
+</div>
+
+<h4>Links zu Dokumenten</h4>
+<p><svg class="icon-sm" width="24" height="24" fill="currentColor"><use xlink:href="fileadmin/icon/glyphicons-basic-636-circle-info.svg#glyphicons-basic"/></svg> Neuen Link in letzter Zeile eingeben; URL löschen, um bestehenden Link zu entfernen</p>
+<f:for each="{song.links}" as="link" iteration="it">
+	<f:form.hidden name="links[{it.index}][uid]" value="{link.uid}" />
+	<div class="form-group row">
+		<div class="col-md-3">
+			<f:form.select name="links[{it.index}][type]" options="{0:'Liedtext',1:'Akkorde',2:'Noten',3:'Präsentation'}" value="{link.type}" class="form-control" />
+		</div>
+		<div class="col-md-3">
+			<f:form.textfield name="links[{it.index}][title]" value="{link.title}" class="form-control" placeholder="Titel" />
+		</div>
+		<div class="col-md-6">
+			<f:form.textfield name="links[{it.index}][url]" value="{link.url}" class="form-control" placeholder="URL" />
+		</div>
+	</div>
+</f:for>
+
+<f:form.hidden name="links[{song.links->f:count()}][uid]" value="0" />
+<div class="form-group row">
+	<div class="col-md-3">
+		<f:form.select name="links[{song.links->f:count()}][type]" options="{0:'Liedtext',1:'Akkorde',2:'Noten',3:'Präsentation'}" class="form-control" />
+	</div>
+	<div class="col-md-3">
+		<f:form.textfield name="links[{song.links->f:count()}][title]" value="{link.title}" class="form-control" placeholder="Titel" />
+	</div>
+	<div class="col-md-6">
+		<f:form.textfield name="links[{song.links->f:count()}][url]" value="{link.url}" class="form-control" placeholder="neue URL" />
+	</div>
+</div>
+</html>
