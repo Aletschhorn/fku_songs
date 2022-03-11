@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = [
 	'uploadfolder' => '0',
 	'createDirs' => '',
 	'clearCacheOnLoad' => 0,
-	'version' => '7.0.0',
+	'version' => '7.0.1',
 	'constraints' => [
 		'depends' => [
 			'typo3' => '9.5.0-10.4.99',
@@ -355,5 +355,9 @@ $EM_CONF[$_EXTKEY] = [
  * Removed pi_flexform with its switchableControllerActions and created separate plugins (in ext_localconf.php)
  * Typoscript (constants and setup) in plugin.tx_fkusongs instead of plugin.tx_fkusongs_songs
  * Define dependency injections with Service.yaml, remove Commands.php to define scheduler tasks
+ *
+ * Version 7.0.1
+ * -------------                    
+ * Bugfix: adding keywords to songs did not work
  *
 **/
