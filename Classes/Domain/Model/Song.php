@@ -223,6 +223,7 @@ class Song extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 		 * You may modify the constructor of this class instead
 		 */
 		$this->links = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		$this->keywords = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
 	}
 
     /**
@@ -682,6 +683,9 @@ class Song extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 	 * @return void
 	 */
 	public function addKeyword(\FKU\FkuSongs\Domain\Model\Keyword $keyword) {
+		if ($this->keywords === NULL) {
+			$this->keywords = new \TYPO3\CMS\Extbase\Persistence\ObjectStorage();
+		}
 		$this->keywords->attach($keyword);
 	}
 	
