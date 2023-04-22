@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = [
 	'uploadfolder' => '0',
 	'createDirs' => '',
 	'clearCacheOnLoad' => 0,
-	'version' => '7.0.1',
+	'version' => '7.1.0',
 	'constraints' => [
 		'depends' => [
 			'typo3' => '9.5.0-10.4.99',
@@ -359,5 +359,10 @@ $EM_CONF[$_EXTKEY] = [
  * Version 7.0.1
  * -------------                    
  * Bugfix: adding keywords to songs did not work
+ *
+ * Version 7.1.0
+ * -------------                    
+ * Rename constants.txt and setup.txt to constants.typoscript and setup.typoscript
+ * Get rid of cache deletion by the extension
  *
 **/
