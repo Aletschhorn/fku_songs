@@ -220,7 +220,6 @@ class ReportingController extends ActionController {
 					$this->reportingRepository->update($reporting);
 				}
 			}
-			$this->clearSpecificCache($this->settings['statisticsPid']);
 		}
 
         $this->redirect('open');
@@ -477,9 +476,6 @@ class ReportingController extends ActionController {
 		        $this->addFlashMessage('&quot;'.$songObject->getTitle().'&quot; hinzugefügt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
 			}
 			
-			if ($this->settings['deleteCachePid']) {
-				$this->clearSpecificCache($this->settings['deleteCachePid']);
-			}
 		} else {
 	        $this->addFlashMessage('Lied hinzufügen fehlgeschlagen', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
 		}
@@ -543,9 +539,6 @@ class ReportingController extends ActionController {
 		} else {
 	        $this->addFlashMessage('Keine Änderungen erkannt', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::INFO);
 		}
-		if ($this->settings['deleteCachePid']) {
-			$this->clearSpecificCache($this->settings['deleteCachePid']);
-		}
 		if ($this->request->hasArgument('event')) {
 			$event = $this->request->getArgument('event');
 	        $this->redirect('showEvent','Reporting','fkusongs',array('event' => $event));
@@ -565,21 +558,7 @@ class ReportingController extends ActionController {
         $event = $reporting->getEvent();
 		$this->reportingRepository->remove($reporting);
         $this->addFlashMessage('Lied aus Liste gelöscht', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
-		if ($this->settings['deleteCachePid']) {
-			$this->clearSpecificCache($this->settings['deleteCachePid']);
-		}
         $this->redirect('editEvent','Reporting','fkusongs',array('event' => $event));
-    }
-
-	/**
-	* clearSpecificCache
-	*
-	* @param \string $pid Comma-separated list of PIDs
-	* @return void
-	*/
-    protected function clearSpecificCache($pid) {
-		$pageIds = explode(',',$pid);
-		$this->cacheService->clearPageCache($pageIds);
     }
 
 }

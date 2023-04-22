@@ -887,12 +887,6 @@ class SongController extends ActionController {
 		$song->setSlug($slug);
 		$this->songRepository->update($song);
 
-
-		// Delete page caches
-		if ($this->settings['deleteCachePid']) {
-			$this->clearSpecificCache($this->settings['deleteCachePid']);
-		}
-
 		$this->addFlashMessage('Lied &quot;'.$song->getTitle().'&quot; eingetragen', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->redirect('list');
     }
@@ -971,9 +965,6 @@ class SongController extends ActionController {
 
 		$this->songRepository->update($song);
 		$this->updateKeywordTable();
-		if ($this->settings['deleteCachePid']) {
-			$this->clearSpecificCache($this->settings['deleteCachePid']);
-		}
 
         $this->addFlashMessage('Liedinformationen geändert'.$test, '', \TYPO3\CMS\Core\Messaging\AbstractMessage::OK);
         $this->redirect('show','Song','fkusongs',array('song' => $song));
@@ -988,21 +979,7 @@ class SongController extends ActionController {
     public function deleteAction(\FKU\FkuSongs\Domain\Model\Song $song) {
         $this->addFlashMessage('The object was deleted. Please be aware that this action is publicly accessible unless you implement an access check. See http://wiki.typo3.org/T3Doc/Extension_Builder/Using_the_Extension_Builder#1._Model_the_domain', '', \TYPO3\CMS\Core\Messaging\AbstractMessage::ERROR);
         $this->songRepository->remove($song);
-		if ($this->settings['deleteCachePid']) {
-			$this->clearSpecificCache($this->settings['deleteCachePid']);
-		}
         $this->redirect('list');
-    }
-
-	/**
-	* clearSpecificCache
-	*
-	* @param \string $pid Comma-separated list of PIDs
-	* @return void
-	*/
-    protected function clearSpecificCache($pid) {
-		$pageIds = explode(',',$pid);
-		$this->cacheService->clearPageCache($pageIds);
     }
 
 	/**

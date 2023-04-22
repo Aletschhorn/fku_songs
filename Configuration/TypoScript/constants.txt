@@ -25,8 +25,6 @@ plugin.tx_fkusongs {
 		statisticsPid =
 		# cat=plugin.tx_fkusongs/others/g; type=int+; label=PID of planning show page
 		planningPid =
-		# cat=plugin.tx_fkusongs/others/k; type=string; label=PID of pages which cache to delete after any edit (comma-separated)
-		deleteCachePid = 
 		# cat=plugin.tx_fkusongs/others/n; type=string; label=List of "last x months" in charts view (comma-separated)
 		chartsTimeSelection = 3,6,12
 		# cat=plugin.tx_fkusongs/others/o; type=int+; label=Page type number for PDF export file

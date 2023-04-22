@@ -15,7 +15,6 @@ plugin.tx_fkusongs {
 		chartsPid = {$plugin.tx_fkusongs.settings.chartsPid}
 		statisticsPid = {$plugin.tx_fkusongs.settings.statisticsPid}
 		planningPid = {$plugin.tx_fkusongs.settings.planningPid}
-		deleteCachePid = {$plugin.tx_fkusongs.settings.deleteCachePid}
 		pdfPageType = {$plugin.tx_fkusongs.settings.pdfPageType}
 		chartsTimeSelection = {$plugin.tx_fkusongs.settings.chartsTimeSelection}
 	}
