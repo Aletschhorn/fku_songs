@@ -10,17 +10,17 @@ return array(
 		'versioningWS' => TRUE,
 		'delete' => 'deleted',
 		'enablecolumns' => array(),
-		'searchFields' => 'status,song,',
+		'searchFields' => 'status,song,vers',
 		'iconfile' => 'EXT:fku_songs/Resources/Public/Icons/tx_fkusongs_domain_model_reporting.gif'
 	),
 	'interface' => array(
-		'showRecordFieldList' => 'status, song, event',
+		'showRecordFieldList' => 'status, song, vers, event',
 	),
 	'types' => array(
 		'1' => array('showitem' => '--palette--;;1'),
 	),
 	'palettes' => array(
-		'1' => array('showitem' => 'song, status'),
+		'1' => array('showitem' => 'song, vers, status'),
 	),
 	'columns' => array(
 		'song' => array(
@@ -41,6 +41,14 @@ return array(
                         )
                     ),
                 ),
+			),
+		),
+		'vers' => array(
+			'exclude' => 1,
+			'label' => 'LLL:EXT:fku_songs/Resources/Private/Language/locallang_db.xlf:tx_fkusongs_domain_model_reporting.vers',
+			'config' => array(
+				'type' => 'input',
+				'eval' => 'trim',
 			),
 		),
 		'event' => array(

@@ -96,6 +96,7 @@ CREATE TABLE tx_fkusongs_domain_model_reporting (
 
 	status int(11) DEFAULT '0' NOT NULL,
 	song int(11) unsigned DEFAULT '0',
+	vers varchar(255) DEFAULT '' NOT NULL,
 	event int(11) unsigned DEFAULT '0',
 
 	tstamp int(11) unsigned DEFAULT '0' NOT NULL,

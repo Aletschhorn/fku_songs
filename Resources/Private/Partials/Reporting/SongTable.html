@@ -2,6 +2,7 @@
 <table class="table">
 	<tr>
 		<th>Titel</th>
+        <th>Stophen</th>
 		<th> </th>
 		<th>Sprache</th>
 		<th>Sammlung</th>
@@ -12,6 +13,7 @@
 	<f:for each="{reporting}" as="songreport">
 		<tr>
 			<td><f:link.action action="show" controller="Song" arguments="{song:songreport.song}" pageUid="{settings.songPid}"> {songreport.song.title}</f:link.action></td>
+            <td>{songreport.vers}</td>
 			<td>
 				<f:if condition="{songreport.song.recommended}==1"><svg class="icon-md" width="32" height="32" fill="#D07601" alt="Kernlied"><use xlink:href="fileadmin/icon/glyphicons-basic-73-bookmark.svg#glyphicons-basic"/></svg></f:if>
 			</td>

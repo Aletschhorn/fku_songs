@@ -4,6 +4,7 @@
     <div class="row">
         <div class="col-8">
         	<f:link.action action="show" controller="Song" arguments="{song:songreport.song}" pageUid="{settings.songPid}"><b>{songreport.song.title}</b></f:link.action>
+            <f:if condition="{songreport.vers}">{songreport.vers}<br /></f:if>
             <span class="float-right"><f:render partial="Song/Flags" arguments="{lang:songreport.song.language}" /></span>
             <br />
             <f:render partial="Song/Collections" arguments="{collections:songreport.song.collection,separator:', ',complete:0}" />

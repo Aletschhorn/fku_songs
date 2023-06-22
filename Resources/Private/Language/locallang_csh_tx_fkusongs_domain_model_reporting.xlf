@@ -12,6 +12,9 @@
 			<trans-unit id="song.description">
 				<source>song</source>
 			</trans-unit>
+			<trans-unit id="vers.description">
+				<source>vers</source>
+			</trans-unit>
 		</body>
 	</file>
 </xliff>

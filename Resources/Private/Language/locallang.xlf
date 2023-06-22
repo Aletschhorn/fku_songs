@@ -102,6 +102,9 @@
 			<trans-unit id="tx_fkusongs_domain_model_reporting.song">
 				<source>Song</source>
 			</trans-unit>
+			<trans-unit id="tx_fkusongs_domain_model_reporting.vers">
+				<source>Verses</source>
+			</trans-unit>
 			<trans-unit id="tx_fkusongs_domain_model_source">
 				<source>Source</source>
 			</trans-unit>

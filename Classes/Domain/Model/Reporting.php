@@ -53,6 +53,13 @@ class Reporting extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     protected $song = NULL;
     
     /**
+     * vers
+     *
+     * @var string $vers
+     */
+    protected $vers = '';
+    
+    /**
      * Returns the status
      *
      * @return int $status
@@ -109,6 +116,27 @@ class Reporting extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
     public function setSong(\FKU\FkuSongs\Domain\Model\Song $song)
     {
         $this->song = $song;
+    }
+
+    /**
+     * Returns the vers
+     *
+     * @return string $vers
+     */
+    public function getVers()
+    {
+        return $this->vers;
+    }
+    
+    /**
+     * Sets the vers
+     *
+     * @param string $vers
+     * @return void
+     */
+    public function setVers(string $vers)
+    {
+        $this->vers = $vers;
     }
 
 }
