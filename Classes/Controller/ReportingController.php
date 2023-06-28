@@ -44,6 +44,41 @@ use FKU\FkuAgenda\Domain\Repository\VisibilityCategoryRepository;
 class ReportingController extends ActionController {
 
     /**
+     * serach modes (predefined options)
+     */
+    protected $searchModes = [1 => 'Nach Beliebtheit', 9 => 'Benutzerdefiniert'];
+	
+    /**
+     * Pre-defined search filter parameters
+     */
+	protected $filterDefault = [
+		'source' => '0,1,2,3,4,5', 
+		'language' => '1,2,3,9',
+		'recommended' => 0,
+		'lyrics' => 0,
+		'sorting' => 'title',
+		'showTone' => 0,
+		'showLastUsage' => 0,
+		'showPopularity' => 0,
+		'showCopyright' => 1
+	];
+	
+    /**
+     * Pre-defined search filter parameters for Gottesdienst
+     */
+	protected $filterPopularity = [
+		'source' => '0,1,2,3,4,5', 
+		'language' => '1,2,3,9',
+		'recommended' => 0,
+		'lyrics' => 0,
+		'sorting' => 'popularity',
+		'showTone' => 0,
+		'showLastUsage' => 0,
+		'showPopularity' => 0,
+		'showCopyright' => 1
+	];
+	
+    /**
      * reportingRepository
      *
      * @var ReportingRepository
@@ -340,48 +375,118 @@ class ReportingController extends ActionController {
 		
 		$sources = $this->sourceRepository->findAll();
 
-		// Initialize
-		$source = '0';
-		foreach ($sources as $single) {
-			$source .= ','.intval($single->getUid());
+		$arguments = $this->request->getArguments();
+		
+		if ($arguments['page'] > 0) { 
+			$pagenow = intval($arguments['page']); 
+		} else {
+			$pagenow = 1;
 		}
-		$filter = array (
-			'searchword' => '', 
-			'source' => $source, 
-			'language' => '1,2,3,9',
-			'recommended' => 0,
-			'lyrics' => 0,
-			'sorting' => 'title'
-		);
-		$pagenow = 1;
 
-		// Get values from search form and pagination
-		if ($this->request->hasArgument('filter')) { 
-			$tempFilter = $this->request->getArgument('filter');
-			if (is_array($tempFilter['source'])) {
-				$filter['source'] = implode(',',array_keys($tempFilter['source'],1));
-			} else {
-				$filter['source'] = $tempFilter['source'];
+		// Get values from search form (and pagination)
+		if (is_array($arguments['filter'])) { 
+			$tempFilter = $arguments['filter'];
+			$tempFilterPopularity = $arguments['set1'];
+
+			$search = [', ',',','  '];
+			$replace = [' ',' ',' '];
+			$filter['searchword'] = str_replace($search, $replace, $tempFilter['searchword']);
+			$filter['predefined'] = intval($tempFilter['predefined']);
+			
+			switch ($filter['predefined']) {
+				case 1:
+					$filter['showTone'] = $tempFilterPopularity['showTone'];
+					$filter['showLastUsage'] = $tempFilterPopularity['showLastUsage'];
+					$filter['showPopularity'] = $tempFilterPopularity['showPopularity'];
+					$filter['showCopyright'] = $tempFilterPopularity['showCopyright'];
+					break;
+				case 9:
+					if (is_array($tempFilter['source'])) {
+						$filter['source'] = implode(',',array_keys($tempFilter['source'],1));
+					} else {
+						$filter['source'] = $tempFilter['source'];
+					}
+					if (is_array($tempFilter['language'])) {
+						$filter['language'] = implode(',',array_keys($tempFilter['language'],1));
+					} else {
+						$filter['language'] = $tempFilter['language'];
+					}
+					$filter['recommended'] = $tempFilter['recommended'];
+					$filter['lyrics'] = $tempFilter['lyrics'];
+					$filter['sorting'] = $tempFilter['sorting'];
+					$filter['showTone'] = $tempFilter['showTone'];
+					$filter['showLastUsage'] = $tempFilter['showLastUsage'];
+					$filter['showPopularity'] = $tempFilter['showPopularity'];
+					$filter['showCopyright'] = $tempFilter['showCopyright'];
+					break;
 			}
-			if (is_array($tempFilter['language'])) {
-				$filter['language'] = implode(',',array_keys($tempFilter['language'],1));
-			} else {
-				$filter['language'] = $tempFilter['language'];
-			}
-			$filter['searchword'] = $tempFilter['searchword'];
-			$filter['recommended'] = $tempFilter['recommended'];
-			$filter['lyrics'] = $tempFilter['lyrics'];
-			$filter['sorting'] = $tempFilter['sorting'];
 		}
-		if ($this->request->hasArgument('page')) { $pagenow = intval($this->request->getArgument('page')); }
+
+		if (! $filter['predefined']) {
+			$filter['predefined'] = 1;
+		}
 		
 		// Get songs from repository
-		$this->songRepository->setAllSources($this->sourceRepository->findAll());
-		$pagetotal = 1;
-		$offset = ($pagenow - 1) * intval($this->settings['resultsPerPage']);
+		$songs = [];
+		$total = 0;
 		$limit = intval($this->settings['resultsPerPage']);
-		$songs = $this->songRepository->findFiltered($filter['searchword'], $filter['source'], $filter['language'], $filter['recommended'], $filter['lyrics'], true, $filter['sorting'], $limit, $offset);
-		$total = $this->songRepository->countFiltered($filter['searchword'], $filter['source'], $filter['language'], $filter['recommended'], $filter['lyrics'], true);
+		$pagetotal = 1;
+		$offset = ($pagenow - 1) * $limit;
+
+		// Get songs from repository
+		$this->songRepository->setAllSources($this->sourceRepository->findAll());
+		switch ($filter['predefined']) {
+			case 1:
+				$songs = $this->songRepository->findFiltered(
+					$filter['searchword'], 
+					$this->filterPopularity['source'], 
+					$this->filterPopularity['language'], 
+					$this->filterPopularity['recommended'], 
+					$this->filterPopularity['lyrics'], 
+					true, 
+					$this->filterPopularity['sorting'], 
+					$limit, 
+					$offset
+				);
+				$total = $this->songRepository->countFiltered(
+					$filter['searchword'], 
+					$this->filterPopularity['source'], 
+					$this->filterPopularity['language'], 
+					$this->filterPopularity['recommended'], 
+					$this->filterPopularity['lyrics'], 
+					true
+				);
+				break;
+			case 9:
+				if ($filter['source'] != '' and $filter['language'] != '') {
+					$songs = $this->songRepository->findFiltered(
+						$filter['searchword'], 
+						$filter['source'], 
+						$filter['language'], 
+						$filter['recommended'], 
+						$filter['lyrics'], 
+						true, 
+						$filter['sorting'], 
+						$limit, 
+						$offset
+					);
+					$total = $this->songRepository->countFiltered(
+						$filter['searchword'], 
+						$filter['source'], 
+						$filter['language'], 
+						$filter['recommended'], 
+						$filter['lyrics'], 
+						true
+					);
+				}
+				break;
+		}
+
+		$filterPopularity = $this->filterPopularity;
+		$filterPopularity['showTone'] = $filter['showTone'];
+		$filterPopularity['showLastUsage'] = $filter['showLastUsage'];
+		$filterPopularity['showPopularity'] = $filter['showPopularity'];
+		$filterPopularity['showCopyright'] = $filter['showCopyright'];
 		
 		// Calculate pages numbers and values for pagination
 		if ($total > $limit) {
@@ -413,7 +518,7 @@ class ReportingController extends ActionController {
 			}
 		}
 
-		$this->view->assignMultiple(array(
+		$this->view->assignMultiple([
 			'songs' => $songs,
 			'total' => $total,
 			'page' => $page,
@@ -421,9 +526,10 @@ class ReportingController extends ActionController {
 			'sources' => $sources,
 			'filter' => $filter,
 			'event' => $event,
+			'filterSet1' => $filterPopularity,
+			'predefOptions' => $this->searchModes,
 			'settings' => $this->settings,
-			'tempFilter' => $tempFilter,
-		));
+		]);
         
     }
     

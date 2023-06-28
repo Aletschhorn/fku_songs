@@ -25,7 +25,7 @@
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
    	                    <f:for each="{predefOptions}" as="option" key="key">
                             <label class="btn btn-outline-dark {f:if(condition:'{key}=={filter.predefined}',then:'active')}" onclick="changeSearchOptions({key})">
-                                <f:form.radio name="filter[predefined]" value="{key}" checked="{key}=={filter.predefined}" />{option}
+                                <f:form.radio name="filter[predefined]" value="{key}" checked="{key}=={filter.predefined}" class="searchmode" />{option}
                             </label>
                         </f:for>
                     </div>
@@ -40,10 +40,10 @@
      </div>
         
     <div id="searchParameters1" class="d-none">
-        <f:render partial="Song/SearchFormParameters" arguments="{filter:filterGottesdienst,sources:sources,inputFieldName:'fgd',disabled:1}" />
+        <f:render partial="Song/SearchFormParameters" arguments="{filter:filterSet1,sources:sources,inputFieldName:'set1',disabled:1}" />
     </div>
     <div id="searchParameters2" class="d-none">
-        <f:render partial="Song/SearchFormParameters" arguments="{filter:filterHighwaeg,sources:sources,inputFieldName:'fhw',disabled:1}" />
+        <f:render partial="Song/SearchFormParameters" arguments="{filter:filterSet2,sources:sources,inputFieldName:'set2',disabled:1}" />
     </div>
     <div id="searchParameters9" class="d-none">
         <f:render partial="Song/SearchFormParameters" arguments="{filter:filter,sources:sources,inputFieldName:'filter',disabled:0}" />
@@ -71,7 +71,7 @@ toggleSearchOptions();
 
 function toggleSearchOptions () {
 	if (searchOptionsDisplayed == 0) {
-		var mode = document.getElementsByName('tx_fkusongs_list[filter][predefined]');
+		var mode = document.getElementsByClassName('searchmode');
 		for (i=0;i<mode.length;i++) {
 			if (mode[i].checked) {
 				parameterSet = mode[i].value;
@@ -92,7 +92,6 @@ function toggleSearchOptions () {
 
 function changeSearchOptions (parameterSet) {
 	if (searchOptionsDisplayed == 1) {
-		console.log(parameterSet);
 		document.getElementById('searchParameters1').className = 'd-none';
 		document.getElementById('searchParameters2').className = 'd-none';
 		document.getElementById('searchParameters9').className = 'd-none';

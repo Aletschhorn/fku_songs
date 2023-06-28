@@ -57,9 +57,9 @@ class SongController extends ActionController {
      * Pre-defined search filter parameters
      */
 	protected $filterDefault = [
-		'source' => '1,2,3', 
+		'source' => '0,1,2,3,4,5', 
 		'language' => '1,2,3,9',
-		'recommended' => 1,
+		'recommended' => 0,
 		'lyrics' => 0,
 		'sorting' => 'title',
 		'showTone' => 1,
@@ -325,8 +325,8 @@ class SongController extends ActionController {
 		// Get values from search form (and pagination)
 		if (is_array($arguments['filter'])) { 
 			$tempFilter = $arguments['filter'];
-			$tempFilterGottesdienst = $arguments['fgd'];
-			$tempFilterHighwaeg = $arguments['fhw'];
+			$tempFilterGottesdienst = $arguments['set1'];
+			$tempFilterHighwaeg = $arguments['set2'];
 
 			$search = [', ',',','  '];
 			$replace = [' ',' ',' '];
@@ -508,8 +508,8 @@ class SongController extends ActionController {
 			'pagearray' => $pagearray,
 			'sources' => $sources,
 			'filter' => $filter,
-			'filterGottesdienst' => $filterGottesdienst,
-			'filterHighwaeg' => $filterHighwaeg,
+			'filterSet1' => $filterGottesdienst,
+			'filterSet2' => $filterHighwaeg,
 			'predefOptions' => $this->searchModes,
 			'settings' => $this->settings,
 		));

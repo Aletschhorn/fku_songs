@@ -7,7 +7,7 @@
 	<f:render partial="Alert" arguments="{flashMessages:flashMessages}" />
 </f:flashMessages>
 
-<f:render partial="Song/SearchForm" arguments="{filter:filter,sources:sources,action:'new',event:event,cancelButton:1}" />
+<f:render partial="Song/SearchForm" arguments="{filter:filter,filterSet1:filterSet1,predefOptions:predefOptions,sources:sources,action:'new',event:event,cancelButton:1}" />
 <br />
 
 <f:if condition="{songs}">
@@ -25,10 +25,22 @@
 			<table class="table">
 				<tr>
 					<th> </th>
-					<th>Titel</th>
-					<th> </th>
-					<th>Sprache</th>
-					<th>Sammlung</th>
+                    <th>Titel</th>
+                    <th> </th>
+                    <th>Sprache</th>
+                    <f:if condition="{filter.showTone}">
+                        <th>Tonart</th>
+                    </f:if>
+                    <th>Sammlung</th>
+                    <f:if condition="{filter.showLastUsage}">
+                        <th>Letzte Verwendung</th>
+                    </f:if>
+                    <f:if condition="{filter.showPopularity}">
+                        <th>Beliebtheit</th>
+                    </f:if>
+                    <f:if condition="{filter.showCopyright}">
+                        <th>Copyright</th>
+                    </f:if>
 				</tr>
 			
 				<f:for each="{songs}" as="song">
@@ -48,9 +60,28 @@
 						<td>
 							<f:render partial="Song/Flags" arguments="{lang:song.language}" />
 						</td>
+                        <f:if condition="{filter.showTone}">
+                            <td>{song.tone}</td>
+                        </f:if>
 						<td>
 							<f:render partial="Song/Collections" arguments="{collections:song.collection,separator:', ',complete:0}" />
 						</td>
+                        <f:if condition="{filter.showLastUsage}">
+                            <f:if condition="{song.lastUsage}">
+                                <f:then>
+                                    <td>{song.lastUsage->f:format.date(format:'d.m.Y')}</td>
+                                </f:then>
+                                <f:else>
+                                    <td>Nie seit Mai 2016</td>
+                                </f:else>
+                            </f:if>
+                        </f:if>
+                        <f:if condition="{filter.showPopularity}">
+                            <td><f:render partial="Song/Popularity" arguments="{popularity:song.popularity}" /></td>
+                        </f:if>
+                        <f:if condition="{filter.showCopyright}">
+                            <td><f:render partial="Song/TextCopyright" arguments="{songtextCopyright:song.songtextCopyright,short:1}" /></td>
+                        </f:if>
 					</tr>
 				</f:for>
 			</table>
