@@ -300,7 +300,7 @@ class SongController extends ActionController {
 		if ($arguments['reset'] == 1 or intval($GLOBALS['TSFE']->fe_user->getKey('ses','songPage')) == 0) {
 			// reset filter values to default
 			$filter = $this->filterDefault;
-			$filter['predefined'] = 1;
+			$filter['predefined'] = 9;
 			$filter['searchword'] = '';
 			$pagenow = 1;
 			
@@ -375,7 +375,7 @@ class SongController extends ActionController {
 		}
 		
 		if (! $filter['predefined']) {
-			$filter['predefined'] = 1;
+			$filter['predefined'] = 9;
 		}
 
 		$songs = [];
