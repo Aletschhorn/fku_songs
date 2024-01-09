@@ -21,7 +21,7 @@ $EM_CONF[$_EXTKEY] = [
 	'uploadfolder' => '0',
 	'createDirs' => '',
 	'clearCacheOnLoad' => 0,
-	'version' => '7.2.1',
+	'version' => '7.2.2',
 	'constraints' => [
 		'depends' => [
 			'typo3' => '9.5.0-10.4.99',
@@ -373,5 +373,9 @@ $EM_CONF[$_EXTKEY] = [
  * Version 7.2.1
  * -------------                    
  * Corrected typo in reporting partial "SongTable.html"
+ *
+ * Version 7.2.2
+ * -------------                    
+ * Corrected link in reporting template "List.html"
  *
 **/
