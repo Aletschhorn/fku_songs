@@ -778,6 +778,7 @@ class Song extends \TYPO3\CMS\Extbase\DomainObject\AbstractEntity {
 			'/^Pre-Refrain.*$/mi',			
 			'/^Bridge.*$/mi',
 			'/^Ending.*$/mi',
+			'/^Outro.*$/mi',
 			'/^Teil.*$/mi'
 		];
 
